@@ -29,7 +29,7 @@ jobs:
 
       - name: Run Pytest
         run: |
-          pytest tests/test_login.py -v --alluredir=allure-results
+          pytest tests/test_login.py::TestLogin::test_login_with_valid_credentials -v --alluredir=allure-results
 
       - name: Get Allure History
         uses: actions/checkout@v4
