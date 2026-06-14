@@ -6,7 +6,7 @@ import time
 from pages.LoginPage import LoginPage
 from pages.HeaderPage import HeaderPage
 import allure
-from utils.file_utils import open_file
+from utils.common_utils import CommonUtils
 import json
 
 
@@ -54,9 +54,9 @@ class TestLogin:
             EC.title_contains("Swag Labs"))
         assert "Swag Labs" in driver.title
 
-    user_data = open_file("testdata/testdata.json")
+    valid_users = CommonUtils.open_file("testdata/users.json")
 
-    @pytest.mark.parametrize("data", user_data)
+    @pytest.mark.parametrize("data", valid_users)
     def test_login_with_valid_user_types_from_json(self, driver, data):
 
         driver.get("https://www.saucedemo.com/")
@@ -110,18 +110,17 @@ class TestLogin:
         ) == error_message
         time.sleep(10)
 
-    with open("testdata/error_messages.json") as f:
-        test_data = json.load(f)
+        invalid_users = CommonUtils.open_file("testdata/error_messages.json")
 
-    @pytest.mark.parametrize("data", test_data)
-    def test_login_validation_from_error_data_json(self, driver, data):
+    @pytest.mark.parametrize("user_data", invalid_users)
+    def test_login_validation_from_error_data_json(self, driver, user_data):
         driver.get("https://www.saucedemo.com/")
 
         time.sleep(2)
         login_page = LoginPage(driver)
-        username = data["username"]
-        password = data["password"]
-        error_message = data["error_message"]
+        username = user_data["username"]
+        password = user_data["password"]
+        error_message = user_data["error_message"]
         login_page.user_login(username, password)
 
         assert login_page.get_error_message(
