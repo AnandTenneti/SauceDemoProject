@@ -1,6 +1,7 @@
 import allure
 import pytest
-from selenium import webdriver  # type: ignore[import]
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options  # type: ignore[import]
 from selenium.webdriver.chrome.service import Service  # type: ignore[import]
 # type: ignore[import]
 from webdriver_manager.chrome import ChromeDriverManager
@@ -13,9 +14,18 @@ import os
 
 @pytest.fixture
 def driver():
+
+    chrome_options = Options()
     # driver = webdriver.Chrome()
     service = Service(ChromeDriverManager().install())
-    driver = webdriver.Chrome(service=service)
+    prefs = {
+        "credentials_enable_service": False,
+        "profile.password_manager_enabled": False
+    }
+
+    chrome_options.add_experimental_option("prefs", prefs)
+    chrome_options.add_argument("--disable-features=PasswordLeakDetection")
+    driver = webdriver.Chrome(service=service, options=chrome_options)
 
     driver.maximize_window()
 
