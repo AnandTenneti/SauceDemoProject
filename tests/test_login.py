@@ -110,7 +110,7 @@ class TestLogin:
         ) == error_message
         time.sleep(10)
 
-        invalid_users = CommonUtils.open_file("testdata/error_messages.json")
+    invalid_users = CommonUtils.open_file("testdata/error_messages.json")
 
     @pytest.mark.parametrize("user_data", invalid_users)
     def test_login_validation_from_error_data_json(self, driver, user_data):
