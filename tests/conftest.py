@@ -1,4 +1,3 @@
-from selenium.webdriver.firefox.options import Options
 import allure
 import pytest
 from selenium import webdriver
@@ -12,26 +11,11 @@ from datetime import datetime
 import os
 
 
-# @pytest.fixture
-# def driver():
-#     firefox_options = Options()
-
-#     firefox_options.add_argument("--headless")  # Optional
-#     firefox_options.add_argument("--width=1920")
-#     firefox_options.add_argument("--height=1080")
-
-#     driver = webdriver.Firefox(options=firefox_options)
-
-#     driver.maximize_window()
-
-#     yield driver
-
-#     driver.quit()
 @pytest.fixture
 def driver():
     chrome_options = Options()
 
-    # chrome_options.add_argument("--headless=new")
+    chrome_options.add_argument("--headless=new")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.add_argument("--disable-gpu")
@@ -63,7 +47,6 @@ def logged_in_driver(driver):
     login_page.user_login("standard_user", "secret_sauce")
 
     yield driver
-
     header_page = HeaderPage(driver)
     header_page.logout()
 
