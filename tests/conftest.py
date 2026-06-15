@@ -1,8 +1,10 @@
+from selenium.webdriver.firefox.options import Options
 import allure
 import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options  # type: ignore[import]
 from selenium.webdriver.chrome.service import Service  # type: ignore[import]
+from selenium.webdriver.chrome.options import Options
 # type: ignore[import]
 from webdriver_manager.chrome import ChromeDriverManager
 
@@ -12,33 +14,39 @@ from datetime import datetime
 import os
 
 
+# @pytest.fixture
+# def driver():
+#     firefox_options = Options()
+
+#     firefox_options.add_argument("--headless")  # Optional
+#     firefox_options.add_argument("--width=1920")
+#     firefox_options.add_argument("--height=1080")
+
+#     driver = webdriver.Firefox(options=firefox_options)
+
+#     driver.maximize_window()
+
+#     yield driver
+
+#     driver.quit()
 @pytest.fixture
 def driver():
-
     chrome_options = Options()
-    # driver = webdriver.Chrome()
-   # service = Service(ChromeDriverManager().install())
-    # prefs = {
-    #   "credentials_enable_service": False,
-    #  "profile.password_manager_enabled": False
-    # }
 
-    # chrome_options.add_experimental_option("prefs", prefs)
-    # chrome_options.add_argument("--disable-features=PasswordLeakDetection")
+    prefs = {
+        "credentials_enable_service": False,
+        "profile.password_manager_enabled": False,
+        "profile.password_manager_leak_detection": False
+    }
 
-    chrome_options.add_argument("--headless=new")
-    chrome_options.add_argument("--no-sandbox")
-    chrome_options.add_argument("--disable-dev-shm-usage")
-    chrome_options.add_argument("--disable-gpu")
-    chrome_options.add_argument("--window-size=1920,1080")
+    chrome_options.add_experimental_option("prefs", prefs)
 
-    driver = webdriver.Chrome(options=chrome_options)
-   # driver = webdriver.Chrome(service=service, options=chrome_options)
+    driver = webdriver.Chrome(
+        options=chrome_options
+    )
 
     driver.maximize_window()
-
     yield driver
-
     driver.quit()
 
 
@@ -50,10 +58,13 @@ def logged_in_driver(driver):
     login_page = LoginPage(driver)
 
     login_page.user_login("standard_user", "secret_sauce")
+    header_page = HeaderPage(driver)
+    header_page.switch_to_dialog()
 
     yield driver
 
-    header_page = HeaderPage(driver)
+    # header_page = HeaderPage(driver)
+    # header_page.switch_to_dialog()
     header_page.logout()
 
 
