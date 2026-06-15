@@ -64,7 +64,7 @@ def logged_in_driver(driver):
 
     login_page.user_login("standard_user", "secret_sauce")
     header_page = HeaderPage(driver)
-    header_page.switch_to_dialog()
+    #header_page.switch_to_dialog()
 
     yield driver
 
