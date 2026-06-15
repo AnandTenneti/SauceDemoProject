@@ -14,31 +14,23 @@ import os
 
 @pytest.fixture
 def driver():
-
     chrome_options = Options()
-    # driver = webdriver.Chrome()
-   # service = Service(ChromeDriverManager().install())
-    # prefs = {
-    #   "credentials_enable_service": False,
-    #  "profile.password_manager_enabled": False
-    # }
 
-    # chrome_options.add_experimental_option("prefs", prefs)
-    # chrome_options.add_argument("--disable-features=PasswordLeakDetection")
+    prefs = {
+        "credentials_enable_service": False,
+        "profile.password_manager_enabled": False,
+        "profile.password_manager_leak_detection": False
+    }
 
-    chrome_options.add_argument("--headless=new")
-    chrome_options.add_argument("--no-sandbox")
-    chrome_options.add_argument("--disable-dev-shm-usage")
-    chrome_options.add_argument("--disable-gpu")
-    chrome_options.add_argument("--window-size=1920,1080")
+    chrome_options.add_experimental_option("prefs", prefs)
 
-    driver = webdriver.Chrome(options=chrome_options)
-   # driver = webdriver.Chrome(service=service, options=chrome_options)
+    driver = webdriver.Chrome(
+        service=Service(ChromeDriverManager().install()),
+        options=chrome_options
+    )
 
     driver.maximize_window()
-
     yield driver
-
     driver.quit()
 
 
