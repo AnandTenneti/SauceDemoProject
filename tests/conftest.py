@@ -1,8 +1,6 @@
 import allure
 import pytest
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options  # type: ignore[import]
-from selenium.webdriver.chrome.service import Service  # type: ignore[import]
 from selenium.webdriver.chrome.options import Options
 
 from pages.LoginPage import LoginPage
@@ -14,7 +12,6 @@ import os
 @pytest.fixture
 def driver():
     chrome_options = Options()
-
     chrome_options.add_argument("--headless=new")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
