@@ -3,8 +3,6 @@ import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options  # type: ignore[import]
 from selenium.webdriver.chrome.service import Service  # type: ignore[import]
-# type: ignore[import]
-from webdriver_manager.chrome import ChromeDriverManager
 
 from pages.LoginPage import LoginPage
 from pages.HeaderPage import HeaderPage
@@ -25,7 +23,6 @@ def driver():
     chrome_options.add_experimental_option("prefs", prefs)
 
     driver = webdriver.Chrome(
-        service=Service(ChromeDriverManager().install()),
         options=chrome_options
     )
 
