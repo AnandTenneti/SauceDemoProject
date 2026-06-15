@@ -27,27 +27,29 @@ jobs:
       - name: Install Chrome
         uses: browser-actions/setup-chrome@v1
 
-      - name: Run Pytest
+      - name: Clean Allure Results
+        run: |
+          rm -rf allure-results
+          rm -rf allure-report
+          mkdir allure-results
+
+      - name: Run Tests
         run: |
           pytest tests/test_login.py::TestLogin::test_login_with_valid_credentials -v --alluredir=allure-results
 
-      - name: Get Allure History
-        uses: actions/checkout@v4
-        if: always()
-        continue-on-error: true
-        with:
-          ref: gh-pages
-          path: gh-pages
-
       - name: Generate Allure Report
         uses: simple-elf/allure-report-action@master
-        if: always()
         with:
           allure_results: allure-results
+          allure_report: allure-report
           allure_history: allure-history
 
+      - name: Verify Report Files
+        run: |
+          echo "Contents of allure-history:"
+          ls -R allure-history
+
       - name: Deploy Report to GitHub Pages
-        if: always()
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

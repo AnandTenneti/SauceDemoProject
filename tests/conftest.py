@@ -5,8 +5,6 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options  # type: ignore[import]
 from selenium.webdriver.chrome.service import Service  # type: ignore[import]
 from selenium.webdriver.chrome.options import Options
-# type: ignore[import]
-from webdriver_manager.chrome import ChromeDriverManager
 
 from pages.LoginPage import LoginPage
 from pages.HeaderPage import HeaderPage
@@ -32,14 +30,21 @@ import os
 @pytest.fixture
 def driver():
     chrome_options = Options()
+    # driver = webdriver.Chrome()
+   # service = Service(ChromeDriverManager().install())
+    # prefs = {
+    #   "credentials_enable_service": False,
+    #  "profile.password_manager_enabled": False
+    # }
 
-    prefs = {
-        "credentials_enable_service": False,
-        "profile.password_manager_enabled": False,
-        "profile.password_manager_leak_detection": False
-    }
+    # chrome_options.add_experimental_option("prefs", prefs)
+    # chrome_options.add_argument("--disable-features=PasswordLeakDetection")
 
-    chrome_options.add_experimental_option("prefs", prefs)
+    chrome_options.add_argument("--headless=new")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_argument("--disable-gpu")
+    chrome_options.add_argument("--window-size=1920,1080")
 
     driver = webdriver.Chrome(
         options=chrome_options
