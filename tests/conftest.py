@@ -2,11 +2,13 @@ import allure
 import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
 
 from pages.LoginPage import LoginPage
 from pages.HeaderPage import HeaderPage
 from datetime import datetime
 import os
+
 
 
 @pytest.fixture
@@ -25,19 +27,57 @@ def driver():
 
     chrome_options.add_experimental_option("prefs", prefs)
 
-    driver = webdriver.Chrome(
-        options=chrome_options
+def pytest_addoption(parser):
+    parser.addoption(
+        "--browser",
+        action="store",
+        default="chrome"
     )
 
+
+@pytest.fixture
+def driver(request):
+    browserName = request.config.getoption("browser")
+    match browserName:
+        case "chrome":
+            chrome_options = Options()
+            chrome_options.add_argument("--headless=new")
+            chrome_options.add_argument("--no-sandbox")
+            chrome_options.add_argument("--disable-dev-shm-usage")
+            chrome_options.add_argument("--disable-gpu")
+
+            prefs = {
+                "credentials_enable_service": False,
+                "profile.password_manager_enabled": False,
+                "profile.password_manager_leak_detection": False
+            }
+
+            chrome_options.add_experimental_option("prefs", prefs)
+            driver = webdriver.Chrome(options=chrome_options)
+        case "firefox":
+            firefox_options = FirefoxOptions()
+            firefox_options.add_argument("--headless")
+            driver = webdriver.Firefox(options=firefox_options)
+        case _:
+            raise ValueError(f"Unsupported browser: {browserName}")
     driver.maximize_window()
+    capabilities = driver.capabilities
+>>>>>>> 5318678 (Update conftest.py)
+
+    allure.attach(
+        f"Browser: {capabilities['browserName']}\n"
+        f"Version: {capabilities['browserVersion']}",
+        name="Execution Details",
+        attachment_type=allure.attachment_type.TEXT
+    )
     yield driver
     driver.quit()
 
 
 @pytest.fixture
-def logged_in_driver(driver):
+def logged_in_driver(driver, base_url):
 
-    driver.get("https://www.saucedemo.com/")
+    driver.get(base_url)
 
     login_page = LoginPage(driver)
 
@@ -68,24 +108,30 @@ def pytest_runtest_makereport(item):
         )
 
         if driver:
-
             try:
+                os.makedirs("screenshots", exist_ok=True)
 
                 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-
                 screenshot_name = (
                     f"screenshots/{item.name}_{timestamp}.png"
                 )
+
+                # Save first
+                driver.save_screenshot(screenshot_name)
+
+                # Then attach
                 allure.attach.file(
                     screenshot_name,
                     name="Failure Screenshot",
                     attachment_type=allure.attachment_type.PNG,
                 )
 
-                driver.save_screenshot(screenshot_name)
-
                 print(f"\nScreenshot saved: {screenshot_name}")
 
             except Exception as e:
-
                 print(f"\nCould not capture screenshot: {e}")
+
+
+@pytest.fixture
+def base_url():
+    return "https://www.saucedemo.com/"
