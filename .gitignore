@@ -1,1 +1,14 @@
 screenshots/
+__pycache__/
+*.pyc
+
+allure-results/
+allure-results-chrome/
+allure-results-firefox/
+
+allure-report/
+
+.vscode/
+.idea/
+
+.DS_Store
