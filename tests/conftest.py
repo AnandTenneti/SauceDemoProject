@@ -10,7 +10,6 @@ from datetime import datetime
 import os
 
 
-
 @pytest.fixture
 def driver():
     chrome_options = Options()
@@ -26,6 +25,7 @@ def driver():
     }
 
     chrome_options.add_experimental_option("prefs", prefs)
+
 
 def pytest_addoption(parser):
     parser.addoption(
@@ -62,8 +62,6 @@ def driver(request):
             raise ValueError(f"Unsupported browser: {browserName}")
     driver.maximize_window()
     capabilities = driver.capabilities
->>>>>>> 5318678 (Update conftest.py)
-
     allure.attach(
         f"Browser: {capabilities['browserName']}\n"
         f"Version: {capabilities['browserVersion']}",
