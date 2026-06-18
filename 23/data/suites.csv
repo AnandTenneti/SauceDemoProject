@@ -1,0 +1,21 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"
+        Verify login functionality for multiple valid users.
+
+        Args:
+            username: Valid SauceDemo username.
+            password: Valid SauceDemo password.
+
+        Expected Result:
+            User should login successfully and logout without errors.
+        ","1095","test_login_with_valid_credentials[visual_user-secret_sauce]","tests","2026-06-18","passed","2026-06-18","TestLogin","test_login","",""
+"
+        Verify login functionality for multiple valid users.
+
+        Args:
+            username: Valid SauceDemo username.
+            password: Valid SauceDemo password.
+
+        Expected Result:
+            User should login successfully and logout without errors.
+        ","2162","test_login_with_valid_credentials[standard_user-secret_sauce]","tests","2026-06-18","passed","2026-06-18","TestLogin","test_login","",""
