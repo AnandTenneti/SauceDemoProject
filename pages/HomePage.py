@@ -80,3 +80,6 @@ class HomePage(BasePage):
             f"add-to-cart-{formatted_name}"
         )
         self.click(locator)
+
+    def inventory_list_loaded(self):
+        return self.PRODUCTS
