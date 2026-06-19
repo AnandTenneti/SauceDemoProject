@@ -1,2 +1,0 @@
-Browser: firefox
-Version: 151.0.4
