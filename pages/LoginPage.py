@@ -13,7 +13,7 @@ class LoginPage(BasePage):
     __USERNAME_INPUT = (By.ID, "user-name")
     __PASSWORD_INPUT = (By.ID, "password")
     __LOGIN_BUTTON = (By.ID, "login-button")
-    ERROR_MESSAGE = (By.CSS_SELECTOR, "h3[data-test='error']")
+    __ERROR_MESSAGE = (By.CSS_SELECTOR, "h3[data-test='error']")
 
     def __init__(self, driver):
         """
@@ -58,4 +58,4 @@ class LoginPage(BasePage):
         Returns:
             str: Error message text.
         """
-        return self.get_text(self.ERROR_MESSAGE)
+        return self.get_text(self.__ERROR_MESSAGE)
