@@ -14,44 +14,8 @@ from utils.common_utils import CommonUtils
 import pytest
 
 
+@pytest.mark.checkout
 class TestCheckoutPage:
-    @pytest.mark.skip(reason="Skipping for now")
-    def test_sort_poduct(self, logged_in_driver):
-        home_page = HomePage(logged_in_driver)
-        time.sleep(10)
-        home_page.select_sort_order(HomePage.SortOptions.NAME_Z_A)
-        time.sleep(10)
-        assert home_page.is_sorted_correctly(HomePage.SortOptions.NAME_Z_A)
-        time.sleep(10)
-
-    @pytest.mark.skip(reason="Skipping for now")
-    def test_product_search(self, logged_in_driver):
-        home_page = HomePage(logged_in_driver)
-        time.sleep(10)
-        product_name = "Sauce Labs Backpack"
-        home_page.click_product_by_name(product_name)
-        product_page = ProductDetailsPage(logged_in_driver)
-        displayed_product_name = product_page.get_product_name()
-        assert displayed_product_name == product_name
-        product_page.add_product_to_cart()
-        assert product_page.is_remove_button_displayed()
-        time.sleep(10)
-
-    @pytest.mark.skip(reason="Skipping for now")
-    def test_add_multiple_products_to_cart(self, logged_in_driver):
-        home_page = HomePage(logged_in_driver)
-        header_page = HeaderPage(logged_in_driver)
-        assert header_page.get_cart_badge_count() == 0
-        time.sleep(10)
-
-        product_list = ["Sauce Labs Backpack",
-                        "Sauce Labs Bike Light", "Sauce Labs Fleece Jacket"]
-        for product in product_list:
-            home_page.click_add_to_cart(product)
-            time.sleep(10)
-
-        assert header_page.get_cart_badge_count() == 3
-        time.sleep(10)
 
     @pytest.mark.smoke
     def test_checkout_flow(self, logged_in_driver):

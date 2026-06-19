@@ -10,6 +10,7 @@ class CheckoutPage(BasePage):
     ZIPCODE = (By.ID, "postal-code")
     CONTINUE_BUTTON = (By.ID, "continue")
     FINISH_BUTTON = (By.ID, "finish")
+    ERROR_VALIDATION_MESSAGE = (By.CSS_SELECTOR, "h3[data-test='error']")
     CANCEL_BUTTON = (By.ID, "cancel")
     PRODUCT_PRICES = (By.CLASS_NAME, "inventory_item_price")
     TOTAL_PRICE = (By.CLASS_NAME, "summary_total_label")
@@ -42,3 +43,6 @@ class CheckoutPage(BasePage):
 
     def get_total_price(self):
         return self.get_text(self.TOTAL_PRICE)
+
+    def get_validation_message(self):
+        return self.get_text(self.ERROR_VALIDATION_MESSAGE)
