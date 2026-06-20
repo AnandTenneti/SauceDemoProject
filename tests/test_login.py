@@ -18,6 +18,7 @@ from utils.common_utils import CommonUtils
 import json
 
 
+@pytest.mark.login
 class TestLogin:
 
     """
@@ -36,6 +37,7 @@ class TestLogin:
         "Verify that a valid user can login successfully"
     )
     @pytest.mark.smoke
+    @pytest.mark.login
     def test_valid_user_login(self, driver, base_url):
         """
         Verify that a standard user can login and logout successfully.
@@ -101,6 +103,8 @@ class TestLogin:
     valid_users = CommonUtils.open_file("testdata/users.json")
 
     @pytest.mark.parametrize("data", valid_users)
+    @pytest.mark.regression
+    @pytest.mark.login
     def test_login_with_valid_user_types_from_json(self, driver, data, base_url):
         """
         Verify login functionality using user credentials
