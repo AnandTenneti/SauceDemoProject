@@ -6,60 +6,51 @@ class PlannerAgent:
 
         plan = {
             "markers": [],
-            "browser": None,
-            "allure": False
+            "browsers": [],
+            "allure": False,
+            "html": False
         }
 
         # Test types
-        for marker in ["smoke", "regression"]:
+        for marker in ["smoke", "regression", "login", "checkout", "inventory", "cart"]:
             if marker in request:
                 plan["markers"].append(marker)
 
         # Browser
         for browser in ["chrome", "firefox", "edge"]:
             if browser in request:
-                plan["browser"] = browser
-                break
+                plan["browsers"].append(browser)
+
         if any(word in request for word in ["allure", "report", "reports"]):
             plan["allure"] = True
+        else:
+            plan["html"] = True
 
         return plan
 
     @staticmethod
-    def build_command(plan):
-        command = "pytest"
+    def build_commands(plan):
+        commands = []
 
-        if plan.get("markers"):
-            command += f' -m "{" or ".join(plan["markers"])}"'
+        browsers = plan["browsers"] or [None]
 
-        if plan.get("browser"):
-            command += f' --browser={plan["browser"]}'
-        if plan.get("allure"):
-            
-            command += " --alluredir=allure-results"
+        for browser in browsers:
+            command = "pytest"
 
-        return command
+            if plan["markers"]:
+                command += f' -m "{" or ".join(plan["markers"])}"'
 
-## -------------------------------------------------------------#
-# from utils.common_utils import CommonUtils
+            if browser:
+                command += f" --browser={browser}"
 
+            if plan["allure"]:
+                command += " --alluredir=allure-results"
 
-# class PlannerAgent:
+            elif plan["html"]:
+                marker_name = "_".join(
+                    plan["markers"]) if plan["markers"] else "all"
+                command += f" --html=reports/{marker_name}_report.html"
 
-#     EXECUTION_MAP = {
-#         "smoke": "pytest -m smoke",
-#         "regression": "pytest -m regression",
-#         "all": "pytest"
-#     }
+            commands.append(command)
 
-#     @staticmethod
-#     def get_commands(request):
-#         request = request.lower()
-
-#         commands = []
-
-#         for test_type, command in PlannerAgent.EXECUTION_MAP.items():
-#             if test_type in request:
-#                 commands.append(command)
-
-#         return commands
+        return commands
