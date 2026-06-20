@@ -1,6 +1,7 @@
-# utils/file_utils.py
+# utils/common_utils.py
 
 import json
+import re
 
 
 class CommonUtils:
@@ -12,3 +13,6 @@ class CommonUtils:
     def get_extension(str):
         extension = str.split(".")[-1]
         return "." + extension
+
+    def extract_value(str):
+        return float(re.search(r"[\d.]+", str).group())

@@ -9,6 +9,10 @@ class WebDriverUtils:
         return WebDriverWait(driver, 10).until(EC.visibility_of_element_located(locator))
 
     @staticmethod
+    def wait_until_elements_visible(driver, locator):
+        return WebDriverWait(driver, 10).until(EC.visibility_of_all_elements_located(locator))
+
+    @staticmethod
     def wait_until_clickable(driver, locator):
         return WebDriverWait(driver, 10).until(EC.element_to_be_clickable(locator))
 
