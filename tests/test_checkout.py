@@ -68,7 +68,7 @@ class TestCheckoutPage:
         checkout_page.enter_checkout_details(
             fake.first_name(), fake.last_name(), fake.zipcode())
         checkout_page.click_on_continue_button()
-        sum_of_product_prices = checkout_page.get_total_product_prices()
+        sum_of_product_prices = checkout_page.calculate_expected_total()
         product_price_total = CommonUtils.extract_value(
             checkout_page.get_total_price())
 
@@ -78,7 +78,7 @@ class TestCheckoutPage:
             f"Displayed total={product_price_total}")
 
         checkout_page.click_on_finish_button()
-        assert checkout_page.order_confirmation() == "Thank you for your order!"
+        assert checkout_page.get_order_confirmation() == "Thank you for your order!"
 
     @pytest.mark.parametrize("first_name, last_name, postal_code,error_message",
                              [
