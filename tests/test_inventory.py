@@ -1,18 +1,15 @@
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-import time
-from pages.LoginPage import LoginPage
-from pages.HeaderPage import HeaderPage
-from pages.HomePage import HomePage
-from pages.ProductDetailsPage import ProductDetailsPage
+
+
+from faker import Faker
+import pytest
+
 from pages.CartPage import CartPage
 from pages.CheckoutPage import CheckoutPage
+from pages.HeaderPage import HeaderPage
+from pages.HomePage import HomePage
+from pages.LoginPage import LoginPage
+from pages.ProductDetailsPage import ProductDetailsPage
 from utils.webdriver_utils import WebDriverUtils
-from faker import Faker
-
-
-import pytest
 
 
 @pytest.mark.inventory
