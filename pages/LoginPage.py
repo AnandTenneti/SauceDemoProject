@@ -3,6 +3,7 @@ from pages.BasePage import BasePage
 
 
 class LoginPage(BasePage):
+
     """
     Page Object representing the SauceDemo login page.
 
