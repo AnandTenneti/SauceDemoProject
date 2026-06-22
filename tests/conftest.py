@@ -1,30 +1,18 @@
+import os
+from datetime import datetime
+
+
 import allure
 import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
+from faker import Faker
 
-from pages.LoginPage import LoginPage
+from config.config import settings
 from pages.HeaderPage import HeaderPage
-from datetime import datetime
-import os
-
-
-@pytest.fixture
-def driver():
-    chrome_options = Options()
-    chrome_options.add_argument("--headless=new")
-    chrome_options.add_argument("--no-sandbox")
-    chrome_options.add_argument("--disable-dev-shm-usage")
-    chrome_options.add_argument("--disable-gpu")
-
-    prefs = {
-        "credentials_enable_service": False,
-        "profile.password_manager_enabled": False,
-        "profile.password_manager_leak_detection": False
-    }
-
-    chrome_options.add_experimental_option("prefs", prefs)
+from pages.LoginPage import LoginPage
+from utils.webdriver_utils import WebDriverUtils
 
 
 def pytest_addoption(parser):
@@ -33,11 +21,18 @@ def pytest_addoption(parser):
         action="store",
         default="chrome"
     )
+    parser.addoption(
+        "--env",
+        action="store",
+        default="local",
+        help="Execution environment: local or remote"
+    )
 
 
 @pytest.fixture
 def driver(request):
     browserName = request.config.getoption("browser")
+    env = request.config.getoption("env")
     match browserName:
         case "chrome":
             chrome_options = Options()
@@ -53,11 +48,24 @@ def driver(request):
             }
 
             chrome_options.add_experimental_option("prefs", prefs)
-            driver = webdriver.Chrome(options=chrome_options)
+            if env == "remote":
+                driver = webdriver.Remote(
+                    command_executor="http://selenium-hub:4444/wd/hub",
+                    options=chrome_options
+                )
+            else:
+                driver = webdriver.Chrome(options=chrome_options)
+
         case "firefox":
             firefox_options = FirefoxOptions()
             firefox_options.add_argument("--headless")
-            driver = webdriver.Firefox(options=firefox_options)
+            if env == "remote":
+                driver = webdriver.Remote(
+                    command_executor="http://selenium-hub:4444/wd/hub",
+                    options=firefox_options
+                )
+            else:
+                driver = webdriver.Firefox(options=firefox_options)
         case _:
             raise ValueError(f"Unsupported browser: {browserName}")
     driver.maximize_window()
@@ -73,9 +81,9 @@ def driver(request):
 
 
 @pytest.fixture
-def logged_in_driver(driver, base_url):
+def logged_in_driver(driver):
 
-    driver.get(base_url)
+    driver.get(settings["base_url"])
 
     login_page = LoginPage(driver)
 
@@ -83,7 +91,10 @@ def logged_in_driver(driver, base_url):
 
     yield driver
     header_page = HeaderPage(driver)
-    header_page.logout()
+    header_page.click_menu_button()
+    WebDriverUtils.wait_until_clickable(
+        driver, header_page.is_logout_visible())
+    header_page.click_logout_link()
 
 
 os.makedirs("screenshots", exist_ok=True)
@@ -130,6 +141,8 @@ def pytest_runtest_makereport(item):
                 print(f"\nCould not capture screenshot: {e}")
 
 
-@pytest.fixture
-def base_url():
-    return "https://www.saucedemo.com/"
+@pytest.fixture(scope="session")
+def fake():
+    faker = Faker()
+    faker.seed_instance(42)
+    return faker

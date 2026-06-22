@@ -1,13 +1,12 @@
 
-from faker import Faker
+
+import pytest
 
 from pages.CartPage import CartPage
 from pages.CheckoutPage import CheckoutPage
 from pages.HeaderPage import HeaderPage
 from pages.HomePage import HomePage
 from utils.common_utils import CommonUtils
-
-import pytest
 
 
 @pytest.mark.checkout
@@ -23,7 +22,7 @@ class TestCheckoutPage:
     """
 
     @pytest.mark.smoke
-    def test_checkout_flow(self, logged_in_driver):
+    def test_checkout_flow(self, logged_in_driver, fake):
         """
         Verify that a user can successfully complete the checkout process.
 
@@ -65,9 +64,9 @@ class TestCheckoutPage:
 
         cart_page.click_on_checkout()
         checkout_page = CheckoutPage(logged_in_driver)
-        faker = Faker()
+
         checkout_page.enter_checkout_details(
-            faker.first_name(), faker.last_name(), faker.zipcode())
+            fake.first_name(), fake.last_name(), fake.zipcode())
         checkout_page.click_on_continue_button()
         sum_of_product_prices = checkout_page.get_total_product_prices()
         product_price_total = CommonUtils.extract_value(
