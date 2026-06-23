@@ -1,6 +1,5 @@
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import json
 
 
 class BasePage:
@@ -15,26 +14,34 @@ class BasePage:
         return self.driver.find_elements(*locator)
 
     def click(self, locator):
-        self.find_element(locator).click()
+        self.find_element_with_fallback(locator).click()
 
     def enter_text(self, locator, text):
-        self.find_element(locator).send_keys(text)
+        element = self.find_element_with_fallback(locator)
+        element.clear()
+        element.send_keys(text)
 
     def get_text(self, locator):
-        return self.find_element(locator).text
+        return self.find_element_with_fallback(locator).text
 
     def wait_until(self, timeout, condition):
         return WebDriverWait(self.driver, timeout).until(condition)
 
     def scroll_to_element(self, locator):
         self.driver.execute_script(
-            'arguments[0].scrollIntoView(true)', self.find_element(locator))
+            'arguments[0].scrollIntoView(true)', self.find_element_with_fallback(locator))
 
-    def get_self_healed_locator(self, driver, locators):
-        for locator in locators:
+    def find_element_with_fallback(self, locator):
+
+        # Normal locator
+        if isinstance(locator, tuple):
+            return self.driver.find_element(*locator)
+
+        # Self-healing locators
+        for loc in locator:
             try:
-                element = driver.find_element(*locator)
-                print(f"Found element using locator: {locator}")
+                element = self.driver.find_element(*loc)
+                print(f"Found element using: {loc}")
                 return element
             except Exception:
                 continue
