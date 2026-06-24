@@ -122,7 +122,6 @@ class TestCheckoutPage:
         # Enter test data with missing required field
         checkout_page.enter_checkout_details(
             first_name, last_name, postal_code)
-        checkout_page = CheckoutPage(logged_in_driver)
         checkout_page.click_on_continue_button()
 
         # Verify validation message
