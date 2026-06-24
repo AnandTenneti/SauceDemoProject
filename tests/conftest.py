@@ -97,9 +97,6 @@ def logged_in_driver(driver):
     header_page.click_logout_link()
 
 
-os.makedirs("screenshots", exist_ok=True)
-
-
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item):
     outcome = yield
