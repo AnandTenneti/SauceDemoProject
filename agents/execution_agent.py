@@ -5,4 +5,7 @@ class ExecutionAgent:
 
     @staticmethod
     def execute(command):
-        subprocess.run(command, shell=True)
+        result = subprocess.run(command, shell=True)
+        if result.returncode != 0:
+            print(
+                f"⚠️  Tests failed or error occurred (exit code {result.returncode})")
