@@ -5,17 +5,17 @@ This module contains positive and negative login scenarios,
 including data-driven tests using parameterization and JSON files.
 """
 
-import pytest
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-import time
-from pages.LoginPage import LoginPage
-from pages.HeaderPage import HeaderPage
-from utils.webdriver_utils import WebDriverUtils
+
 import allure
+import pytest
+
+from selenium.webdriver.support import expected_conditions as EC
+
+from pages.HeaderPage import HeaderPage
+from pages.LoginPage import LoginPage
 from utils.common_utils import CommonUtils
-import json
+from utils.webdriver_utils import WebDriverUtils
+from config.config import settings
 
 
 @pytest.mark.login
@@ -38,7 +38,7 @@ class TestLogin:
     )
     @pytest.mark.smoke
     @pytest.mark.login
-    def test_valid_user_login(self, driver, base_url):
+    def test_valid_user_login(self, driver):
         """
         Verify that a standard user can login and logout successfully.
 
@@ -52,7 +52,8 @@ class TestLogin:
             User is redirected to inventory page after login
             and login page after logout.
         """
-        driver.get(base_url)
+
+        driver.get(settings["base_url"])
 
         WebDriverUtils.wait_until(driver, EC.title_contains("Swag Labs"))
         login_page = LoginPage(driver)
@@ -72,7 +73,7 @@ class TestLogin:
         ("standard_user", "secret_sauce"),
         ("visual_user", "secret_sauce")
     ])
-    def test_login_with_valid_credentials(self, driver, base_url, username, password):
+    def test_login_with_valid_credentials(self, driver, username, password):
         """
         Verify login functionality for multiple valid users.
 
@@ -84,7 +85,7 @@ class TestLogin:
             User should login successfully and logout without errors.
         """
 
-        driver.get(base_url)
+        driver.get(settings["base_url"])
 
         WebDriverUtils.wait_until(driver, EC.title_contains("Swag Labs"))
         login_page = LoginPage(driver)
@@ -105,7 +106,7 @@ class TestLogin:
     @pytest.mark.parametrize("data", valid_users)
     @pytest.mark.regression
     @pytest.mark.login
-    def test_login_with_valid_user_types_from_json(self, driver, data, base_url):
+    def test_login_with_valid_user_types_from_json(self, driver, data):
         """
         Verify login functionality using user credentials
         loaded from a JSON file.
@@ -116,7 +117,7 @@ class TestLogin:
         Expected Result:
             User should login successfully and logout.
         """
-        driver.get(base_url)
+        driver.get(settings["base_url"])
 
         WebDriverUtils.wait_until(driver, EC.title_contains("Swag Labs"))
         login_page = LoginPage(driver)
@@ -137,7 +138,7 @@ class TestLogin:
         WebDriverUtils.wait_until(driver, EC.title_contains("Swag Labs"))
         assert "Swag Labs" in driver.title
 
-    def test_login_with_invalid_username(self, driver, base_url):
+    def test_login_with_invalid_username(self, driver):
         """
         Verify error message is displayed when
         an invalid username is entered.
@@ -147,7 +148,7 @@ class TestLogin:
         """
         error_message = "Epic sadface: Username and password do not match any user in this service"
 
-        driver.get(base_url)
+        driver.get(settings["base_url"])
 
         WebDriverUtils.wait_until(driver, EC.title_contains("Swag Labs"))
         login_page = LoginPage(driver)
@@ -163,7 +164,7 @@ class TestLogin:
         ("standard_user", "", "Epic sadface: Password is required"),
         ("", "test", "Epic sadface: Username is required")
     ])
-    def test_login_validation_for_invalid_credentials(self, driver, base_url, username, password, error_message):
+    def test_login_validation_for_invalid_credentials(self, driver, username, password, error_message):
         """
         Verify validation messages for invalid login scenarios.
 
@@ -175,7 +176,7 @@ class TestLogin:
         Expected Result:
             Correct validation message should be displayed.
         """
-        driver.get(base_url)
+        driver.get(settings["base_url"])
 
         WebDriverUtils.wait_until(driver, EC.title_contains("Swag Labs"))
         login_page = LoginPage(driver)
@@ -187,7 +188,7 @@ class TestLogin:
     invalid_users = CommonUtils.open_file("testdata/error_messages.json")
 
     @pytest.mark.parametrize("user_data", invalid_users)
-    def test_login_validation_from_error_data_json(self, driver, base_url, user_data):
+    def test_login_validation_from_error_data_json(self, driver, user_data):
         """
         Verify login validation messages using
         test data loaded from JSON.
@@ -200,7 +201,7 @@ class TestLogin:
             Actual error message should match
             expected error message from test data.
         """
-        driver.get(base_url)
+        driver.get(settings["base_url"])
 
         WebDriverUtils.wait_until(driver, EC.title_contains("Swag Labs"))
         login_page = LoginPage(driver)
