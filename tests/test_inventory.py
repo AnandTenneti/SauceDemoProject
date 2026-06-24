@@ -22,7 +22,7 @@ class TestHomePage:
     - The `logged_in_driver` fixture provides an authenticated session.
     """
 
-    def test_sort_poduct(self, logged_in_driver):
+    def test_sort_product(self, logged_in_driver):
         """
         Verify that products can be sorted correctly.
 
@@ -128,4 +128,4 @@ class TestHomePage:
         checkout_page.enter_checkout_details(first_name, last_name, zip_code)
         checkout_page.click_on_continue_button()
         checkout_page.click_on_finish_button()
-        assert checkout_page.order_confirmation() == "Thank you for your order!"
+        assert checkout_page.get_order_confirmation() == "Thank you for your order!"
