@@ -1,3 +1,6 @@
+from utils.test_registry import get_markers
+
+
 class PlannerAgent:
 
     @staticmethod
@@ -10,9 +13,10 @@ class PlannerAgent:
             "allure": False,
             "html": False
         }
+        available_markers = get_markers()
 
         # Test types
-        for marker in ["smoke", "regression", "login", "checkout", "inventory", "cart"]:
+        for marker in available_markers:
             if marker in request:
                 plan["markers"].append(marker)
 
