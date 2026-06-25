@@ -48,7 +48,7 @@ class BasePage:
         ):
             return self.driver.find_element(*locators)
 
-    # Fallback locators
+        # Fallback locators
         failed = []
 
         for locator in locators:

@@ -165,7 +165,7 @@ def pytest_runtest_makereport(item):
                 print(f"\nCould not capture screenshot: {e}")
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="function")
 def fake():
     faker = Faker()
     faker.seed_instance(42)
