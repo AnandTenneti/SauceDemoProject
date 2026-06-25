@@ -121,7 +121,7 @@ def cart_with_items(logged_in_driver):
     for product in ["Sauce Labs Backpack", "Sauce Labs Bike Light", "Sauce Labs Fleece Jacket"]:
         home_page.click_add_to_cart(product)
     HeaderPage(logged_in_driver).click_cart_icon()
-    return CartPage(logged_in_driver)
+    yield CartPage(logged_in_driver)
 
 
 @pytest.hookimpl(hookwrapper=True)

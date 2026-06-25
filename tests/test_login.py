@@ -71,7 +71,7 @@ class TestLogin:
         ("standard_user", "secret_sauce"),
         ("visual_user", "secret_sauce")
     ])
-    def test_login_with_valid_credentials(self, logged_in_driver, username, password):
+    def test_login_with_valid_credentials(self, driver, username, password):
         """
         Verify login functionality for multiple valid users.
 
@@ -83,17 +83,23 @@ class TestLogin:
             User should login successfully and logout without errors.
         """
 
+        driver.get(settings["base_url"])
+
+        login_page = LoginPage(driver)
+
+        login_page.user_login(username, password)
         WebDriverUtils.wait_until(
-            logged_in_driver, EC.url_contains("inventory"))
-        assert "Swag Labs" in logged_in_driver.title
-        header_page = HeaderPage(logged_in_driver)
+            driver, EC.url_contains("inventory"))
+        home_page = HomePage(driver)
+        assert "Swag Labs" in home_page.get_title()
+        header_page = HeaderPage(driver)
         header_page.click_menu_button()
         WebDriverUtils.wait_until_clickable(
-            logged_in_driver, header_page.get_logout_link())
+            driver, header_page.get_logout_link())
         header_page.click_logout_link()
         WebDriverUtils.wait_until(
-            logged_in_driver, EC.title_contains("Swag Labs"))
-        assert "Swag Labs" in logged_in_driver.title
+            driver, EC.title_contains("Swag Labs"))
+        assert "Swag Labs" in driver.title
 
     valid_users = CommonUtils.open_file("testdata/users.json")
 

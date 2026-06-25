@@ -12,6 +12,7 @@ class TestCartPage:
         assert cart_page.get_cart_item_count() == 2
 
     @pytest.mark.regression
+    @pytest.mark.smoke
     def test_remove_all_items_from_cart(self, cart_with_items):
         cart_page = cart_with_items
         assert cart_page.get_cart_item_count() == 3
