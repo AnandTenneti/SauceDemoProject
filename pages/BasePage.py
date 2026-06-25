@@ -34,15 +34,19 @@ class BasePage:
 
     def find_element_with_fallback(self, locators):
 
-        if len(locators) == 2 and isinstance(locators[0], str):
+        if isinstance(locators, tuple):
             return self.driver.find_element(*locators)
+
+        failed = []
 
         for locator in locators:
             try:
-                print(f"Found element using: {locator}")
-                return self.driver.find_element(*locator)
+                element = self.driver.find_element(*locator)
+                print(f"✓ Found element using: {locator}")
+                return element
             except Exception:
-                continue
+                failed.append(locator)
 
-            raise NoSuchElementException(
-                f"Element not found using any of {len(locator)} fallback locators")
+        raise NoSuchElementException(
+            f"Element not found. Tried locators: {failed}"
+        )
