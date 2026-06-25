@@ -61,7 +61,7 @@ class CartPage(BasePage):
        Get the total number of products currently present in the cart.
 
        Returns:
-           in
+           int
            cart_items = self.find_elements(self.__CART_ITEMS)
            """
         return len(self.find_elements(self.__CART_ITEMS))
