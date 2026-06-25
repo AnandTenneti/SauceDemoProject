@@ -19,5 +19,5 @@ class WebDriverUtils:
 
     @staticmethod
     def wait_until(driver, condition, timeout=None):
-        timeout = timeout or settings["timeout"]
-        return WebDriverWait(driver, timeout).until(condition)
+        t = timeout if timeout is not None else settings["timeout"]
+        return WebDriverWait(driver, t).until(condition)

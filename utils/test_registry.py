@@ -25,4 +25,4 @@ def get_markers():
                 if marker:
                     markers.append(marker)
 
-        return markers
+    return markers
