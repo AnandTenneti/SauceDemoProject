@@ -1,5 +1,6 @@
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import NoSuchElementException
 
 
 class BasePage:
@@ -31,19 +32,17 @@ class BasePage:
         self.driver.execute_script(
             'arguments[0].scrollIntoView(true)', self.find_element_with_fallback(locator))
 
-    def find_element_with_fallback(self, locator):
+    def find_element_with_fallback(self, locators):
 
-        # Normal locator
-        if isinstance(locator, tuple):
-            return self.driver.find_element(*locator)
+        if len(locators) == 2 and isinstance(locators[0], str):
+            return self.driver.find_element(*locators)
 
-        # Self-healing locators
-        for loc in locator:
+        for locator in locators:
             try:
-                element = self.driver.find_element(*loc)
-                print(f"Found element using: {loc}")
-                return element
+                print(f"Found element using: {locator}")
+                return self.driver.find_element(*locator)
             except Exception:
                 continue
 
-        raise Exception("Element not found using any locator")
+            raise NoSuchElementException(
+                f"Element not found using any of {len(locator)} fallback locators")

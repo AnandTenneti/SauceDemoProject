@@ -11,25 +11,22 @@ class LoginPage(BasePage):
     and retrieve login validation messages.
     """
 
-    # __USERNAME_INPUT = (By.ID, "user-name")
-    # __PASSWORD_INPUT = (By.ID, "password")
-    __USERNAME_INPUT = [
+    __USERNAME_INPUT = (
         (By.ID, "user-name"),
         (By.NAME, "user-name"),
         (By.CSS_SELECTOR, "[data-test='username']")
-    ]
+    )
 
-    __PASSWORD_INPUT = [
+    __PASSWORD_INPUT = (
         (By.ID, "password"),
         (By.NAME, "password"),
         (By.CSS_SELECTOR, "[data-test='password']")
-    ]
-    __LOGIN_BUTTON = [
-        (By.ID, "login-buttons"),
+    )
+    __LOGIN_BUTTON = (
+        (By.ID, "login-button"),
         (By.CSS_SELECTOR, "[data-test='login-button']"),
-        (By.XPATH, "//input[@value='Login']"),
-        (By.XPATH, "//input[contains(@class,'submit')]")
-    ]
+        (By.XPATH, "//input[@value='Login']")
+    )
     __ERROR_MESSAGE = (By.CSS_SELECTOR, "h3[data-test='error']")
 
     def __init__(self, driver):

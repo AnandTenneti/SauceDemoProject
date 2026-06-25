@@ -1,5 +1,6 @@
 from selenium.webdriver.common.by import By
 from pages.BasePage import BasePage
+from utils.common_utils import CommonUtils
 
 
 class CartPage(BasePage):
@@ -20,6 +21,7 @@ class CartPage(BasePage):
 
     __CONTINUE_SHOPPING_BUTTON = (By.ID, "continue-shopping")
     __CHECKOUT_BUTTON = (By.ID, "checkout")
+    __CART_ITEMS = (By.XPATH, "//div[@class='cart_item']")
 
     def click_on_continue_shopping(self):
         """
@@ -44,3 +46,68 @@ class CartPage(BasePage):
         immediately visible within the viewport.
         """
         self.scroll_to_element(self.__CHECKOUT_BUTTON)
+
+    def get_cart_items(self):
+        """
+    Retrieve all cart item elements currently displayed in the cart.
+
+    Returns:
+        list[WebElement]: List of cart item web elements.
+    """
+        return self.find_elements(self.__CART_ITEMS)
+
+    def get_cart_item_count(self):
+        """
+       Get the total number of products currently present in the cart.
+
+       Returns:
+           in
+           cart_items = self.find_elements(self.__CART_ITEMS)
+           """
+        return len(self.find_elements(self.__CART_ITEMS))
+
+    def remove_item_from_cart(self, product_name):
+        """
+    Remove a specific product from the shopping cart.
+
+    Args:
+        product_name(str): Product name as displayed in the application.
+
+    Example:
+        remove_item_from_cart("Sauce Labs Backpack")
+    """
+        formatted_name = CommonUtils.rename_text(product_name)
+        locator = (
+            By.ID,
+            f"remove-{formatted_name}"
+        )
+        self.click(locator)
+
+    def remove_all_items(self):
+        """
+    Remove all products currently present in the shopping cart.
+
+    Iteratively clicks the remove button for each cart item until
+    the cart becomes empty.
+
+    Notes:
+        - Useful for test cleanup.
+        - Safe to call when the cart is already empty.
+    """
+        locator = (By.XPATH, "//div[@class='cart_item']//button")
+
+        while self.find_elements(locator):
+            self.find_element(locator).click()
+
+    def get_cart_total(self):
+        """
+   Calculate the total price of all products currently present
+   in the shopping cart.
+
+   Returns:
+       float: Sum of all product prices.
+
+   Raises:
+       NotImplementedError: Method implementation pending.
+   """
+    pass
