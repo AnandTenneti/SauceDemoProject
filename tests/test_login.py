@@ -106,7 +106,7 @@ class TestLogin:
     @pytest.mark.parametrize("data", valid_users)
     @pytest.mark.regression
     @pytest.mark.login
-    def test_login_with_valid_user_types_from_json(self, logged_in_driver, data):
+    def test_login_with_valid_user_types_from_json(self, driver, data):
         """
         Verify login functionality using user credentials
         loaded from a JSON file.
@@ -117,20 +117,26 @@ class TestLogin:
         Expected Result:
             User should login successfully and logout.
         """
+        driver.get(settings["base_url"])
+
+        login_page = LoginPage(driver)
+        username = data["username"]
+        password = data["password"]
+        login_page.user_login(username, password)
         WebDriverUtils.wait_until(
-            logged_in_driver, EC.url_contains("inventory"))
-        home_page = HomePage(logged_in_driver)
+            driver, EC.url_contains("inventory"))
+        home_page = HomePage(driver)
         assert "Swag Labs" in home_page.get_title()
 
-        header_page = HeaderPage(logged_in_driver)
+        header_page = HeaderPage(driver)
         header_page.click_menu_button()
         WebDriverUtils.wait_until_clickable(
-            logged_in_driver, header_page.get_logout_link()
+            driver, header_page.get_logout_link()
         )
         header_page.click_logout_link()
         WebDriverUtils.wait_until(
-            logged_in_driver, EC.title_contains("Swag Labs"))
-        login_page = LoginPage(logged_in_driver)
+            driver, EC.title_contains("Swag Labs"))
+        login_page = LoginPage(driver)
         assert "Swag Labs" in login_page.get_title()
 
     def test_login_with_invalid_username(self, driver):
