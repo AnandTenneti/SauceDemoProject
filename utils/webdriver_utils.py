@@ -18,5 +18,6 @@ class WebDriverUtils:
         return WebDriverWait(driver, settings["timeout"]).until(EC.element_to_be_clickable(locator))
 
     @staticmethod
-    def wait_until(driver, condition, timeout=10):
-        return WebDriverWait(driver, settings["timeout"]).until(condition)
+    def wait_until(driver, condition, timeout=None):
+        timeout = timeout or settings["timeout"]
+        return WebDriverWait(driver, timeout).until(condition)
