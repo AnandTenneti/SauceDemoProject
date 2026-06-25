@@ -8,6 +8,8 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.webdriver.edge.options import Options as EdgeOptions
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 from faker import Faker
 
 from config.config import settings
@@ -105,8 +107,7 @@ def logged_in_driver(driver):
     try:
         header_page = HeaderPage(driver)
         header_page.click_menu_button()
-        WebDriverUtils.wait_until_clickable(
-            driver, header_page.is_logout_visible())
+        assert header_page.is_logout_visible(), "Logout button is not visible"
         header_page.click_logout_link()
     except:
         pass

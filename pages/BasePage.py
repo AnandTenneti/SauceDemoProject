@@ -34,9 +34,15 @@ class BasePage:
 
     def find_element_with_fallback(self, locators):
 
-        if isinstance(locators, tuple):
+        # Single locator
+        if (
+            isinstance(locators, tuple)
+            and len(locators) == 2
+            and isinstance(locators[0], str)
+        ):
             return self.driver.find_element(*locators)
 
+    # Fallback locators
         failed = []
 
         for locator in locators:

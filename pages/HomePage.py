@@ -2,6 +2,7 @@ from enum import Enum
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 from pages.BasePage import BasePage
+from utils.common_utils import CommonUtils
 
 
 class HomePage(BasePage):
@@ -127,7 +128,7 @@ class HomePage(BasePage):
         Args:
             product_name (str): Name of the product to add.
         """
-        formatted_name = self.rename_text(product_name)
+        formatted_name = CommonUtils.format_product_id(product_name)
 
         locator = (
             By.ID,

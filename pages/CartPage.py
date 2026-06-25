@@ -53,7 +53,7 @@ class CartPage(BasePage):
 
     Returns:
         list[WebElement]: List of cart item web elements.
-    """
+        """
         return self.find_elements(self.__CART_ITEMS)
 
     def get_cart_item_count(self):
@@ -75,8 +75,8 @@ class CartPage(BasePage):
 
     Example:
         remove_item_from_cart("Sauce Labs Backpack")
-    """
-        formatted_name = CommonUtils.rename_text(product_name)
+        """
+        formatted_name = CommonUtils.format_product_id(product_name)
         locator = (
             By.ID,
             f"remove-{formatted_name}"
@@ -93,7 +93,7 @@ class CartPage(BasePage):
     Notes:
         - Useful for test cleanup.
         - Safe to call when the cart is already empty.
-    """
+        """
         locator = (By.XPATH, "//div[@class='cart_item']//button")
 
         while self.find_elements(locator):
@@ -109,5 +109,5 @@ class CartPage(BasePage):
 
    Raises:
        NotImplementedError: Method implementation pending.
-   """
+        """
     pass
