@@ -106,4 +106,4 @@ class CartPage(BasePage):
     Returns:
        float: Sum of all product prices.
         """
-    pass
+        raise NotImplementedError("Needs to be implemented")
