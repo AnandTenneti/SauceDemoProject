@@ -45,5 +45,4 @@ class TestCartPage:
         cart_page = CartPage(logged_in_driver)
         assert cart_page.get_cart_item_count() == 3
         cart_page.remove_all_items()
-        # time.sleep(10)
         assert cart_page.get_cart_item_count() == 0
