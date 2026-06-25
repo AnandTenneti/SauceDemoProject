@@ -7,6 +7,7 @@ import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
+from selenium.webdriver.edge.options import Options as EdgeOptions
 from faker import Faker
 
 from config.config import settings
@@ -66,6 +67,17 @@ def driver(request):
                 )
             else:
                 driver = webdriver.Firefox(options=firefox_options)
+        case "edge":
+            edge_options = EdgeOptions()
+            edge_options.add_argument("--headless")
+            if env == "remote":
+                driver = webdriver.Remote(
+                    command_executor="http://selenium-hub:4444/wd/hub",
+                    options=edge_options
+                )
+            else:
+                driver = webdriver.Edge(options=edge_options)
+
         case _:
             raise ValueError(f"Unsupported browser: {browserName}")
     driver.maximize_window()
@@ -90,11 +102,14 @@ def logged_in_driver(driver):
     login_page.user_login("standard_user", "secret_sauce")
 
     yield driver
-    header_page = HeaderPage(driver)
-    header_page.click_menu_button()
-    WebDriverUtils.wait_until_clickable(
-        driver, header_page.is_logout_visible())
-    header_page.click_logout_link()
+    try:
+        header_page = HeaderPage(driver)
+        header_page.click_menu_button()
+        WebDriverUtils.wait_until_clickable(
+            driver, header_page.is_logout_visible())
+        header_page.click_logout_link()
+    except:
+        pass
 
 
 @pytest.hookimpl(hookwrapper=True)
