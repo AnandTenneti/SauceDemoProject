@@ -8,13 +8,14 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.webdriver.edge.options import Options as EdgeOptions
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import WebDriverWait
+
 from faker import Faker
 
 from config.config import settings
 from pages.HeaderPage import HeaderPage
 from pages.LoginPage import LoginPage
+from pages.HomePage import HomePage
+from pages.CartPage import CartPage
 from utils.webdriver_utils import WebDriverUtils
 
 
@@ -107,10 +108,20 @@ def logged_in_driver(driver):
     try:
         header_page = HeaderPage(driver)
         header_page.click_menu_button()
-        assert header_page.is_logout_visible(), "Logout button is not visible"
+        WebDriverUtils.wait_until_clickable(
+            driver, header_page.get_logout_link())
         header_page.click_logout_link()
-    except:
+    except Exception:
         pass
+
+
+@pytest.fixture
+def cart_with_items(logged_in_driver):
+    home_page = HomePage(logged_in_driver)
+    for product in ["Sauce Labs Backpack", "Sauce Labs Bike Light", "Sauce Labs Fleece Jacket"]:
+        home_page.click_add_to_cart(product)
+    HeaderPage(logged_in_driver).click_cart_icon()
+    return CartPage(logged_in_driver)
 
 
 @pytest.hookimpl(hookwrapper=True)

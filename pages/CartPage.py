@@ -58,11 +58,10 @@ class CartPage(BasePage):
 
     def get_cart_item_count(self):
         """
-       Get the total number of products currently present in the cart.
+        Get the total number of products currently present in the cart.
 
        Returns:
-           int
-           cart_items = self.find_elements(self.__CART_ITEMS)
+        int: Number of items currently in the cart.
            """
         return len(self.find_elements(self.__CART_ITEMS))
 
@@ -101,13 +100,10 @@ class CartPage(BasePage):
 
     def get_cart_total(self):
         """
-   Calculate the total price of all products currently present
-   in the shopping cart.
+    Calculate the total price of all products currently present
+    in the shopping cart.
 
-   Returns:
+    Returns:
        float: Sum of all product prices.
-
-   Raises:
-       NotImplementedError: Method implementation pending.
         """
     pass

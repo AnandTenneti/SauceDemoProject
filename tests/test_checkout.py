@@ -22,6 +22,7 @@ class TestCheckoutPage:
     """
 
     @pytest.mark.smoke
+    @pytest.mark.regression
     def test_checkout_flow(self, logged_in_driver, fake):
         """
         Verify that a user can successfully complete the checkout process.
@@ -80,6 +81,7 @@ class TestCheckoutPage:
         checkout_page.click_on_finish_button()
         assert checkout_page.get_order_confirmation() == "Thank you for your order!"
 
+    @pytest.mark.regression
     @pytest.mark.parametrize("first_name, last_name, postal_code,error_message",
                              [
                                  ("", "a", 1, "Error: First Name is required"),

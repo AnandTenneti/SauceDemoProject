@@ -32,6 +32,12 @@ class BasePage:
         self.driver.execute_script(
             'arguments[0].scrollIntoView(true)', self.find_element_with_fallback(locator))
 
+    def get_title(self):
+        return self.driver.title
+
+    def get_current_url(self):
+        return self.driver.current_url
+
     def find_element_with_fallback(self, locators):
 
         # Single locator

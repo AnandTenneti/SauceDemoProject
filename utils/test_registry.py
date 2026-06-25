@@ -1,13 +1,13 @@
 # utils/test_registry.py
 
-import configparser
+import os
 
 
 def get_markers():
 
+    ini_path = os.path.join(os.path.dirname(__file__), "..", "pytest.ini")
     markers = []
-
-    with open("pytest.ini") as f:
+    with open(os.path.normpath(ini_path)) as f:
         inside = False
 
         for line in f:
@@ -25,4 +25,4 @@ def get_markers():
                 if marker:
                     markers.append(marker)
 
-    return markers
+        return markers

@@ -3,6 +3,8 @@ from pages.BasePage import BasePage
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
+from utils.webdriver_utils import WebDriverUtils
+
 
 class HeaderPage(BasePage):
     """
@@ -70,11 +72,11 @@ class HeaderPage(BasePage):
         Opens the menu and clicks the logout link.
         """
         self.click_menu_button()
-        WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable(self.__LOGOUT_LINK))
+        WebDriverUtils.wait_until_clickable(
+            self.driver, self.get_logout_link())
         self.click_logout_link()
 
-    def is_logout_visible(self):
+    def get_logout_link(self):
         """
         Return the logout link locator.
 

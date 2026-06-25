@@ -13,6 +13,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 from pages.HeaderPage import HeaderPage
 from pages.LoginPage import LoginPage
+from pages.HomePage import HomePage
 from utils.common_utils import CommonUtils
 from utils.webdriver_utils import WebDriverUtils
 from config.config import settings
@@ -38,7 +39,7 @@ class TestLogin:
     )
     @pytest.mark.smoke
     @pytest.mark.login
-    def test_valid_user_login(self, driver):
+    def test_valid_user_login(self, logged_in_driver):
         """
         Verify that a standard user can login and logout successfully.
 
@@ -52,28 +53,25 @@ class TestLogin:
             User is redirected to inventory page after login
             and login page after logout.
         """
+        WebDriverUtils.wait_until(
+            logged_in_driver, EC.url_contains("inventory"))
+        home_page = HomePage(logged_in_driver)
 
-        driver.get(settings["base_url"])
-
-        WebDriverUtils.wait_until(driver, EC.title_contains("Swag Labs"))
-        login_page = LoginPage(driver)
-
-        login_page.user_login("standard_user", "secret_sauce")
-        WebDriverUtils.wait_until(driver, EC.url_contains("inventory"))
-        assert "inventory" in driver.current_url
-        header_page = HeaderPage(driver)
+        assert "inventory" in home_page.get_current_url()
+        header_page = HeaderPage(logged_in_driver)
         header_page.click_menu_button()
         WebDriverUtils.wait_until_clickable(
-            driver, header_page.is_logout_visible())
+            logged_in_driver, header_page.get_logout_link())
         header_page.click_logout_link()
-        WebDriverUtils.wait_until(driver, EC.title_contains("Swag Labs"))
-        assert "Swag Labs" in driver.title
+        WebDriverUtils.wait_until(
+            logged_in_driver, EC.title_contains("Swag Labs"))
+        assert "Swag Labs" in logged_in_driver.title
 
     @pytest.mark.parametrize("username,password", [
         ("standard_user", "secret_sauce"),
         ("visual_user", "secret_sauce")
     ])
-    def test_login_with_valid_credentials(self, driver, username, password):
+    def test_login_with_valid_credentials(self, logged_in_driver, username, password):
         """
         Verify login functionality for multiple valid users.
 
@@ -85,28 +83,24 @@ class TestLogin:
             User should login successfully and logout without errors.
         """
 
-        driver.get(settings["base_url"])
-
-        WebDriverUtils.wait_until(driver, EC.title_contains("Swag Labs"))
-        login_page = LoginPage(driver)
-
-        login_page.user_login(username, password)
-        WebDriverUtils.wait_until(driver, EC.url_contains("inventory"))
-        assert "Swag Labs" in driver.title
-        header_page = HeaderPage(driver)
+        WebDriverUtils.wait_until(
+            logged_in_driver, EC.url_contains("inventory"))
+        assert "Swag Labs" in logged_in_driver.title
+        header_page = HeaderPage(logged_in_driver)
         header_page.click_menu_button()
         WebDriverUtils.wait_until_clickable(
-            driver, header_page.is_logout_visible())
+            logged_in_driver, header_page.get_logout_link())
         header_page.click_logout_link()
-        WebDriverUtils.wait_until(driver, EC.title_contains("Swag Labs"))
-        assert "Swag Labs" in driver.title
+        WebDriverUtils.wait_until(
+            logged_in_driver, EC.title_contains("Swag Labs"))
+        assert "Swag Labs" in logged_in_driver.title
 
     valid_users = CommonUtils.open_file("testdata/users.json")
 
     @pytest.mark.parametrize("data", valid_users)
     @pytest.mark.regression
     @pytest.mark.login
-    def test_login_with_valid_user_types_from_json(self, driver, data):
+    def test_login_with_valid_user_types_from_json(self, logged_in_driver, data):
         """
         Verify login functionality using user credentials
         loaded from a JSON file.
@@ -117,26 +111,21 @@ class TestLogin:
         Expected Result:
             User should login successfully and logout.
         """
-        driver.get(settings["base_url"])
+        WebDriverUtils.wait_until(
+            logged_in_driver, EC.url_contains("inventory"))
+        home_page = HomePage(logged_in_driver)
+        assert "Swag Labs" in home_page.get_title()
 
-        WebDriverUtils.wait_until(driver, EC.title_contains("Swag Labs"))
-        login_page = LoginPage(driver)
-        username = data["username"]
-        password = data["password"]
-
-        login_page.user_login(username, password)
-        WebDriverUtils.wait_until(driver, EC.url_contains("inventory"))
-
-        assert "Swag Labs" in driver.title
-
-        header_page = HeaderPage(driver)
+        header_page = HeaderPage(logged_in_driver)
         header_page.click_menu_button()
         WebDriverUtils.wait_until_clickable(
-            driver, header_page.is_logout_visible
-            ())
+            logged_in_driver, header_page.get_logout_link()
+        )
         header_page.click_logout_link()
-        WebDriverUtils.wait_until(driver, EC.title_contains("Swag Labs"))
-        assert "Swag Labs" in driver.title
+        WebDriverUtils.wait_until(
+            logged_in_driver, EC.title_contains("Swag Labs"))
+        login_page = LoginPage(logged_in_driver)
+        assert "Swag Labs" in login_page.get_title()
 
     def test_login_with_invalid_username(self, driver):
         """

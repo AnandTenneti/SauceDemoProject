@@ -35,6 +35,7 @@ class TestHomePage:
         Products should be sorted in descending alphabetical order.
         """
         home_page = HomePage(logged_in_driver)
+        home_page.is_inventory_page_loaded()
         WebDriverUtils.wait_until_elements_visible(logged_in_driver,
                                                    home_page.inventory_list_loaded())
         home_page.select_sort_order(HomePage.SortOptions.NAME_Z_A)

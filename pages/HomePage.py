@@ -145,3 +145,6 @@ class HomePage(BasePage):
             tuple: Locator representing the inventory list.
         """
         return self.PRODUCTS
+
+    def is_inventory_page_loaded(self):
+        return "inventory" in self.get_current_url()
