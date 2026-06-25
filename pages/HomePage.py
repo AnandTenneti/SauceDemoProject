@@ -120,42 +120,6 @@ class HomePage(BasePage):
                 return names == sorted(names, reverse=True)
         return False
 
-    # def is_sorted_high_to_low(self):
-    #     """
-    #     Verify that product prices are sorted in descending order.
-
-    #     Returns:
-    #         bool: True if prices are sorted high to low.
-    #     """
-    #     prices = self.get_all_prices()
-    #     return prices == sorted(prices, reverse=True)
-
-    # def is_sorted_low_to_high(self):
-    #     """
-    #     Verify that product prices are sorted in ascending order.
-
-    #     Returns:
-    #         bool: True if prices are sorted low to high.
-    #     """
-    #     prices = self.get_all_prices()
-    #     return prices == sorted(prices)
-
-    def rename_text(self, text):
-        """
-        Convert a product name into the format used by SauceDemo
-        add-to-cart button IDs.
-
-        Example:
-            'Sauce Labs Backpack' -> 'sauce-labs-backpack'
-
-        Args:
-            text (str): Product name.
-
-        Returns:
-            str: Formatted product identifier.
-        """
-        return text.replace(" ", "-").lower()
-
     def click_add_to_cart(self, product_name):
         """
         Add the specified product to the shopping cart.
