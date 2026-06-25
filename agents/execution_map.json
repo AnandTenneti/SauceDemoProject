@@ -1,7 +1,0 @@
-{
-  "smoke": "pytest -m smoke",
-  "regression": "pytest -m regression",
-  "all": "pytest",
-  "chrome": "pytest --browser=chrome",
-  "firefox": "pytest --browser=firefox"
-}
