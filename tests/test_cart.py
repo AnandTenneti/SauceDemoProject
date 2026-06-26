@@ -4,6 +4,7 @@ import pytest
 @pytest.mark.cart
 class TestCartPage:
     @pytest.mark.regression
+    @pytest.mark.smoke
     def test_removing_item_from_cart(self, cart_with_items):
         cart_page = cart_with_items
         assert cart_page.get_cart_item_count() == 3
