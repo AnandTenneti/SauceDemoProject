@@ -67,10 +67,16 @@ class TestLogin:
             logged_in_driver, EC.title_contains("Swag Labs"))
         assert "Swag Labs" in logged_in_driver.title
 
+    @allure.title("Verify login with valid user credentials")
+    @allure.description(
+        "Verify that users with valid credentials can log in successfully "
+        "and are redirected to the inventory page."
+    )
     @pytest.mark.parametrize("username,password", [
         ("standard_user", "secret_sauce"),
         ("visual_user", "secret_sauce")
     ])
+    @pytest.mark.smoke
     def test_login_with_valid_credentials(self, driver, username, password):
         """
         Verify login functionality for multiple valid users.
@@ -103,6 +109,10 @@ class TestLogin:
 
     valid_users = CommonUtils.open_file("testdata/users.json")
 
+    @allure.title("Verify successful login")
+    @allure.description(
+        "Verify that a valid user can login successfully"
+    )
     @pytest.mark.parametrize("data", valid_users)
     @pytest.mark.regression
     @pytest.mark.login
@@ -139,6 +149,11 @@ class TestLogin:
         login_page = LoginPage(driver)
         assert "Swag Labs" in login_page.get_title()
 
+    @allure.title("Verify unsuccessful login")
+    @allure.description(
+        "Verify error message is displayed on entering invalid user details"
+    )
+    @pytest.mark.smoke
     def test_login_with_invalid_username(self, driver):
         """
         Verify error message is displayed when
@@ -165,6 +180,7 @@ class TestLogin:
         ("standard_user", "", "Epic sadface: Password is required"),
         ("", "test", "Epic sadface: Username is required")
     ])
+    @pytest.mark.regression
     def test_login_validation_for_invalid_credentials(self, driver, username, password, error_message):
         """
         Verify validation messages for invalid login scenarios.
@@ -189,6 +205,7 @@ class TestLogin:
     invalid_users = CommonUtils.open_file("testdata/error_messages.json")
 
     @pytest.mark.parametrize("user_data", invalid_users)
+    @pytest.mark.regression
     def test_login_validation_from_error_data_json(self, driver, user_data):
         """
         Verify login validation messages using

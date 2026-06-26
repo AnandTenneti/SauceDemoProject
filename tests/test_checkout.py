@@ -23,7 +23,7 @@ class TestCheckoutPage:
 
     @pytest.mark.smoke
     @pytest.mark.regression
-    def test_checkout_flow(self, logged_in_driver, fake):
+    def test_checkout_flow(self, cart_with_items, fake):
         """
         Verify that a user can successfully complete the checkout process.
 
@@ -43,28 +43,12 @@ class TestCheckoutPage:
             - Order is placed successfully.
             - Confirmation message is displayed.
         """
-        home_page = HomePage(logged_in_driver)
-        header_page = HeaderPage(logged_in_driver)
 
-        # Verify cart is empty before adding products
-        assert header_page.get_cart_badge_count() == 0
-
-        product_list = ["Sauce Labs Backpack",
-                        "Sauce Labs Bike Light", "Sauce Labs Fleece Jacket"]
-
-        # Add product to cart
-        for product in product_list:
-            home_page.click_add_to_cart(product)
-
-        assert header_page.get_cart_badge_count() == 3
-
-        header_page.click_cart_icon()
-
-        cart_page = CartPage(logged_in_driver)
+        cart_page = CartPage(cart_with_items.driver)
         cart_page.scroll_to_checkout_button()
 
         cart_page.click_on_checkout()
-        checkout_page = CheckoutPage(logged_in_driver)
+        checkout_page = CheckoutPage(cart_with_items.driver)
 
         checkout_page.enter_checkout_details(
             fake.first_name(), fake.last_name(), fake.zipcode())
@@ -88,7 +72,7 @@ class TestCheckoutPage:
                                  ("a", "", 1, "Error: Last Name is required"),
                                  ("a", "b", "", "Error: Postal Code is required")
                              ])
-    def test_checkout_details_validation(self, logged_in_driver, first_name, last_name, postal_code, error_message):
+    def test_checkout_details_validation(self, cart_with_items, first_name, last_name, postal_code, error_message):
         """
         Verify validation messages are displayed when mandatory
         checkout fields are left blank.
@@ -102,24 +86,11 @@ class TestCheckoutPage:
             Appropriate validation message is displayed for each
             missing required field.
         """
-        home_page = HomePage(logged_in_driver)
-        header_page = HeaderPage(logged_in_driver)
-        assert header_page.get_cart_badge_count() == 0
-
-        product_list = ["Sauce Labs Backpack",
-                        "Sauce Labs Bike Light", "Sauce Labs Fleece Jacket"]
-        for product in product_list:
-            home_page.click_add_to_cart(product)
-
-        assert header_page.get_cart_badge_count() == 3
-
-        header_page.click_cart_icon()
-
-        cart_page = CartPage(logged_in_driver)
+        cart_page = cart_with_items
         cart_page.scroll_to_checkout_button()
 
         cart_page.click_on_checkout()
-        checkout_page = CheckoutPage(logged_in_driver)
+        checkout_page = CheckoutPage(cart_with_items.driver)
 
         # Enter test data with missing required field
         checkout_page.enter_checkout_details(
