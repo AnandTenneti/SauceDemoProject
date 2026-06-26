@@ -71,6 +71,3 @@ class LoginPage(BasePage):
             str: Error message text.
         """
         return self.get_text(self.__ERROR_MESSAGE)
-
-    # def is_page_loaded(self):
-    #     return "saucedemo" in self.driver.get_current_url
