@@ -1,10 +1,9 @@
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException
-from abc import ABC
 
 
-class BasePage(ABC):
+class BasePage():
 
     def __init__(self, driver):
         self.driver = driver
@@ -25,9 +24,6 @@ class BasePage(ABC):
 
     def get_text(self, locator):
         return self.find_element_with_fallback(locator).text
-
-    def wait_until(self, timeout, condition):
-        return WebDriverWait(self.driver, timeout).until(condition)
 
     def scroll_to_element(self, locator):
         self.driver.execute_script(
@@ -63,3 +59,7 @@ class BasePage(ABC):
         raise NoSuchElementException(
             f"Element not found. Tried locators: {failed}"
         )
+
+    # @abstractmethod
+    # def is_page_loaded():
+    #     pass
