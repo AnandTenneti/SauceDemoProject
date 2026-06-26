@@ -44,11 +44,12 @@ class TestCheckoutPage:
             - Confirmation message is displayed.
         """
 
-        cart_page = cart_with_items.driver
+        cart_page = cart_with_items
         cart_page.scroll_to_checkout_button()
 
         cart_page.click_on_checkout()
-        checkout_page = CheckoutPage(cart_with_items.driver)
+        driver = cart_with_items.driver
+        checkout_page = CheckoutPage(driver)
 
         checkout_page.enter_checkout_details(
             fake.first_name(), fake.last_name(), fake.zipcode())
@@ -90,7 +91,8 @@ class TestCheckoutPage:
         cart_page.scroll_to_checkout_button()
 
         cart_page.click_on_checkout()
-        checkout_page = CheckoutPage(cart_with_items.driver)
+        driver = cart_with_items.driver
+        checkout_page = CheckoutPage(driver)
 
         # Enter test data with missing required field
         checkout_page.enter_checkout_details(
