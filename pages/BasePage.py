@@ -59,7 +59,3 @@ class BasePage():
         raise NoSuchElementException(
             f"Element not found. Tried locators: {failed}"
         )
-
-    # @abstractmethod
-    # def is_page_loaded():
-    #     pass
