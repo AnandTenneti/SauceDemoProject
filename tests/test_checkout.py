@@ -44,7 +44,7 @@ class TestCheckoutPage:
             - Confirmation message is displayed.
         """
 
-        cart_page = CartPage(cart_with_items.driver)
+        cart_page = cart_with_items.driver
         cart_page.scroll_to_checkout_button()
 
         cart_page.click_on_checkout()

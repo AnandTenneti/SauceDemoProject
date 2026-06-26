@@ -49,9 +49,9 @@ class CartPage(BasePage):
 
     def get_cart_items(self):
         """
-    Retrieve all cart item elements currently displayed in the cart.
+        Retrieve all cart item elements currently displayed in the cart.
 
-    Returns:
+        Returns:
         list[WebElement]: List of cart item web elements.
         """
         return self.find_elements(self.__CART_ITEMS)
@@ -67,12 +67,12 @@ class CartPage(BasePage):
 
     def remove_item_from_cart(self, product_name):
         """
-    Remove a specific product from the shopping cart.
+        Remove a specific product from the shopping cart.
 
-    Args:
+        Args:
         product_name(str): Product name as displayed in the application.
 
-    Example:
+        Example:
         remove_item_from_cart("Sauce Labs Backpack")
         """
         formatted_name = CommonUtils.format_product_id(product_name)
@@ -84,12 +84,12 @@ class CartPage(BasePage):
 
     def remove_all_items(self):
         """
-    Remove all products currently present in the shopping cart.
+        Remove all products currently present in the shopping cart.
 
-    Iteratively clicks the remove button for each cart item until
-    the cart becomes empty.
+        Iteratively clicks the remove button for each cart item until
+        the cart becomes empty.
 
-    Notes:
+        Notes:
         - Useful for test cleanup.
         - Safe to call when the cart is already empty.
         """
@@ -100,10 +100,10 @@ class CartPage(BasePage):
 
     def get_cart_total(self):
         """
-    Calculate the total price of all products currently present
-    in the shopping cart.
+        Calculate the total price of all products currently present
+        in the shopping cart.
 
-    Returns:
-       float: Sum of all product prices.
+        Returns:
+        float: Sum of all product prices.
         """
         raise NotImplementedError("Needs to be implemented")
