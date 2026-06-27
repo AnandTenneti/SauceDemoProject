@@ -8,6 +8,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.webdriver.edge.options import Options as EdgeOptions
+from config.config import settings
 
 from faker import Faker
 
@@ -102,7 +103,7 @@ def logged_in_driver(driver):
 
     login_page = LoginPage(driver)
 
-    login_page.user_login("standard_user", "secret_sauce")
+    login_page.user_login(settings["username"], settings["password"])
 
     yield driver
     try:
