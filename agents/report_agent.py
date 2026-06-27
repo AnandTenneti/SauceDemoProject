@@ -5,10 +5,12 @@ class ReportAgent:
 
     @staticmethod
     def generate():
-        subprocess.run(
+        result = subprocess.run(
             "allure generate allure-results --clean -o allure-report",
             shell=True
         )
+        if result.returncode != 0:
+            print("⚠️  Allure report generation failed")
 
     @staticmethod
     def open():

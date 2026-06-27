@@ -25,7 +25,7 @@ class PlannerAgent:
             if browser in request:
                 plan["browsers"].append(browser)
 
-        if any(word in request for word in ["allure", "report", "reports"]):
+        if "allure" in request:
             plan["allure"] = True
         else:
             plan["html"] = True
@@ -44,8 +44,7 @@ class PlannerAgent:
             if plan["markers"]:
                 command += f' -m "{" or ".join(plan["markers"])}"'
 
-            if browser:
-                command += f" --browser={browser}"
+            command += f" --browser={browser}"
 
             if plan["allure"]:
                 command += " --alluredir=allure-results"
