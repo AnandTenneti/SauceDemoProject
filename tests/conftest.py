@@ -104,10 +104,11 @@ def logged_in_driver(driver):
     login_page = LoginPage(driver)
     users = CommonUtils.open_file("testdata/users.json")
 
-    user = next(
+    user = next((
         u for u in users
         if u["username"] == "standard_user"
-    )
+    ), None)
+    assert user is not None, "standard_user not found in testdata/users.json"
     login_page.user_login(user["username"], user["password"])
 
     yield driver
