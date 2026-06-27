@@ -12,12 +12,13 @@ from config.config import settings
 
 from faker import Faker
 
-from config.config import settings
+
 from pages.HeaderPage import HeaderPage
 from pages.LoginPage import LoginPage
 from pages.HomePage import HomePage
 from pages.CartPage import CartPage
 from utils.webdriver_utils import WebDriverUtils
+from utils.common_utils import CommonUtils
 
 
 def pytest_addoption(parser):
@@ -102,8 +103,10 @@ def logged_in_driver(driver):
     driver.get(settings["base_url"])
 
     login_page = LoginPage(driver)
+    user = CommonUtils.open_file("testdata/users.json")[0]
 
-    login_page.user_login(settings["username"], settings["password"])
+    login_page.user_login(
+        user["username"], user["password"])
 
     yield driver
     try:
