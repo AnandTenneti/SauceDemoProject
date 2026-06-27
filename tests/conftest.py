@@ -1,24 +1,23 @@
 import os
 from datetime import datetime
 
-
+# Third-party
 import allure
 import pytest
+from faker import Faker
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.webdriver.edge.options import Options as EdgeOptions
+from selenium.webdriver.firefox.options import Options as FirefoxOptions
+
+# Local application
 from config.config import settings
-
-from faker import Faker
-
-
-from pages.HeaderPage import HeaderPage
-from pages.LoginPage import LoginPage
-from pages.HomePage import HomePage
 from pages.CartPage import CartPage
-from utils.webdriver_utils import WebDriverUtils
+from pages.HeaderPage import HeaderPage
+from pages.HomePage import HomePage
+from pages.LoginPage import LoginPage
 from utils.common_utils import CommonUtils
+from utils.webdriver_utils import WebDriverUtils
 
 
 def pytest_addoption(parser):
