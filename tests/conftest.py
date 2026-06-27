@@ -105,8 +105,7 @@ def logged_in_driver(driver):
     login_page = LoginPage(driver)
     user = CommonUtils.open_file("testdata/users.json")[0]
 
-    login_page.user_login(
-        user["username"], user["password"])
+    login_page.user_login(user["username"], user["password"])
 
     yield driver
     try:

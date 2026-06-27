@@ -60,9 +60,9 @@ class CartPage(BasePage):
         """
         Get the total number of products currently present in the cart.
 
-       Returns:
+        Returns:
         int: Number of items currently in the cart.
-           """
+        """
         return len(self.find_elements(self.__CART_ITEMS))
 
     def remove_item_from_cart(self, product_name):

@@ -5,10 +5,10 @@ from utils.common_utils import CommonUtils
 
 class CheckoutPage(BasePage):
     """
-    Page Object Model for the SauceDemo checkout workflow.
+        Page Object Model for the SauceDemo checkout workflow.
 
-    This page encapsulates all interactions related to the checkout
-    process, including:
+        This page encapsulates all interactions related to the checkout
+        process, including:
 
         - Entering customer information.
         - Navigating through checkout steps.
@@ -17,8 +17,8 @@ class CheckoutPage(BasePage):
         - Validating checkout errors.
         - Calculating and verifying order totals.
 
-    The class provides reusable methods for test cases that validate
-    successful and unsuccessful checkout scenarios.
+        The class provides reusable methods for test cases that validate
+        successful and unsuccessful checkout scenarios.
     """
 
     __FIRST_NAME = (By.ID, "first-name")
