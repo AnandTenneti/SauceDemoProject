@@ -39,10 +39,9 @@ class TestCheckoutPage:
             - Confirmation message is displayed.
         """
 
-        cart_page = cart_with_items
-        cart_page.scroll_to_checkout_button()
+        cart_with_items.scroll_to_checkout_button()
 
-        cart_page.click_on_checkout()
+        cart_with_items.click_on_checkout()
         driver = cart_with_items.driver
         checkout_page = CheckoutPage(driver)
 
@@ -82,10 +81,10 @@ class TestCheckoutPage:
             Appropriate validation message is displayed for each
             missing required field.
         """
-        cart_page = cart_with_items
-        cart_page.scroll_to_checkout_button()
 
-        cart_page.click_on_checkout()
+        cart_with_items.scroll_to_checkout_button()
+
+        cart_with_items.click_on_checkout()
         driver = cart_with_items.driver
         checkout_page = CheckoutPage(driver)
 
