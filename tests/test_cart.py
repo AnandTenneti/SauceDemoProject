@@ -1,7 +1,6 @@
 import pytest
 
 
-
 @pytest.mark.cart
 class TestCartPage:
     @pytest.mark.regression

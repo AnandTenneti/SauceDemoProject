@@ -101,10 +101,13 @@ def driver(request):
 def logged_in_driver(driver):
 
     driver.get(settings["base_url"])
-
     login_page = LoginPage(driver)
-    user = CommonUtils.open_file("testdata/users.json")[0]
+    users = CommonUtils.open_file("testdata/users.json")
 
+    user = next(
+        u for u in users
+        if u["username"] == "standard_user"
+    )
     login_page.user_login(user["username"], user["password"])
 
     yield driver

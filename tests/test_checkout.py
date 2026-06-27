@@ -1,11 +1,6 @@
-
-
 import pytest
 
-from pages.CartPage import CartPage
 from pages.CheckoutPage import CheckoutPage
-from pages.HeaderPage import HeaderPage
-from pages.HomePage import HomePage
 from utils.common_utils import CommonUtils
 
 
