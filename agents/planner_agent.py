@@ -36,7 +36,7 @@ class PlannerAgent:
     def build_commands(plan):
         commands = []
 
-        browsers = plan["browsers"] or [None]
+        browsers = plan["browsers"] or ["chrome"]
 
         for browser in browsers:
             command = "pytest"
