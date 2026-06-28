@@ -18,6 +18,10 @@ while True:
             print(f"Executing: {command}")
             ExecutionAgent.execute(command)
 
+        if plan["quit"]:
+            print("Test execution completed")
+            break
+
         if plan.get("allure"):
             ReportAgent.generate()
             ReportAgent.open()
