@@ -1,7 +1,15 @@
+# Core test framework
 pytest==9.0.3
+pytest-xdist==3.8.0
+
+# Browser automation
 selenium==4.44.0
 webdriver-manager==4.1.2
+
+#Reporting
 allure-pytest==2.16.0
 pytest-html==4.2.0
-pytest-xdist==3.8.0
+
+#Test data
+
 Faker==40.23.0
