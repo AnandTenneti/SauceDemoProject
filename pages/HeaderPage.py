@@ -16,9 +16,9 @@ class HeaderPage(BasePage):
     - User logout functionality
     """
 
-    MENU_BUTTON = (By.ID, "react-burger-menu-btn")
+    __MENU_BUTTON = (By.ID, "react-burger-menu-btn")
     __LOGOUT_LINK = (By.ID, "logout_sidebar_link")
-    CART_ICON = (By.CLASS_NAME, "shopping_cart_link")
+    __CART_ICON = (By.CLASS_NAME, "shopping_cart_link")
     SHOPPING_CART_BADGE = (By.CLASS_NAME, "shopping_cart_badge")
 
     def __init__(self, driver):
@@ -32,7 +32,7 @@ class HeaderPage(BasePage):
 
     def click_menu_button(self):
         """Click the hamburger menu button."""
-        self.click(self.MENU_BUTTON)
+        self.click(self.__MENU_BUTTON)
 
     def click_logout_link(self):
         """Click the logout link from the side menu."""
@@ -40,7 +40,7 @@ class HeaderPage(BasePage):
 
     def click_cart_icon(self):
         """Navigate to the shopping cart page."""
-        self.click(self.CART_ICON)
+        self.click(self.__CART_ICON)
 
     def is_shopping_cart_badge_displayed(self):
         """
@@ -49,7 +49,7 @@ class HeaderPage(BasePage):
         Returns:
             list: List of matching badge elements.
         """
-        return self.find_elements(self.SHOPPING_CART_BADGE)
+        return self.find_elements(self.__SHOPPING_CART_BADGE)
 
     def get_cart_badge_count(self):
         """
@@ -58,7 +58,7 @@ class HeaderPage(BasePage):
         Returns:
             int: Number of items in the cart. Returns 0 if badge is not present.
         """
-        badges = self.find_elements(self.SHOPPING_CART_BADGE)
+        badges = self.find_elements(self.__SHOPPING_CART_BADGE)
 
         if not badges:
             return 0
