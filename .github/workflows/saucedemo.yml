@@ -35,7 +35,7 @@ jobs:
 
       - name: Run Tests
         run: |
-          pytest tests/test_login.py::TestLogin::test_login_with_valid_credentials -v --alluredir=allure-results
+          pytest -v --alluredir=allure-results
 
       - name: Generate Allure Report
         uses: simple-elf/allure-report-action@master
