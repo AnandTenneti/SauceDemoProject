@@ -19,7 +19,7 @@ class HeaderPage(BasePage):
     __MENU_BUTTON = (By.ID, "react-burger-menu-btn")
     __LOGOUT_LINK = (By.ID, "logout_sidebar_link")
     __CART_ICON = (By.CLASS_NAME, "shopping_cart_link")
-    SHOPPING_CART_BADGE = (By.CLASS_NAME, "shopping_cart_badge")
+    __SHOPPING_CART_BADGE = (By.CLASS_NAME, "shopping_cart_badge")
 
     def __init__(self, driver):
         """
