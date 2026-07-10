@@ -1,0 +1,17 @@
+[
+  {
+    "name": "Sauce Labs Backpack",
+    "description": "Sly Pack that melds uncompromising style with unequaled laptop and tablet protection",
+    "price": "$29.99"
+  },
+  {
+    "name": "Sauce Labs Bike Light",
+    "description": "Water-resistant with 3 lighting modes, 1 AAA battery included.",
+    "price": "$9.99"
+  },
+  {
+    "name": "Sauce Labs Bolt T-Shirt",
+    "description": "Get your testing superhero on with the Sauce Labs bolt T-shirt",
+    "price": "$15.99"
+  }
+]
