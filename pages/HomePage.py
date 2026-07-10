@@ -33,12 +33,12 @@ class HomePage(BasePage):
         NAME_A_Z = "Name (A to Z)"
         NAME_Z_A = "Name (Z to A)"
 
-    PRODUCTS = (By.CSS_SELECTOR, "div.inventory_list div.inventory_item")
-    PRODUCT_PRICE = (
+    __PRODUCTS = (By.CSS_SELECTOR, "div.inventory_list div.inventory_item")
+    __PRODUCT_PRICE = (
         By.CSS_SELECTOR, "div.inventory_item div.inventory_item_price")
-    PRODUCT_NAMES = (
+    __PRODUCT_NAMES = (
         By.CSS_SELECTOR, "div.inventory_item div.inventory_item_name")
-    PRODUCTS_SORT_ORDER = (By.CLASS_NAME, "product_sort_container")
+    __PRODUCTS_SORT_ORDER = (By.CLASS_NAME, "product_sort_container")
 
     def __init__(self, driver):
         """
@@ -66,7 +66,7 @@ class HomePage(BasePage):
         Args:
             option (str): Visible text of the sorting option.
         """
-        dropdown = self.find_element(self.PRODUCTS_SORT_ORDER)
+        dropdown = self.find_element(self.__PRODUCTS_SORT_ORDER)
         select = Select(dropdown)
         select.select_by_visible_text(option)
 
@@ -77,7 +77,7 @@ class HomePage(BasePage):
         Returns:
             list[str]: List of product names.
         """
-        elements = self.find_elements(self.PRODUCT_NAMES)
+        elements = self.find_elements(self.__PRODUCT_NAMES)
         return [element.text for element in elements]
 
     def get_all_prices(self):
@@ -87,7 +87,7 @@ class HomePage(BasePage):
         Returns:
             list[float]: List of product prices.
         """
-        prices = self.find_elements(self.PRODUCT_PRICE)
+        prices = self.find_elements(self.__PRODUCT_PRICE)
 
         return [
             float(price.text.replace("$", ""))
@@ -144,7 +144,7 @@ class HomePage(BasePage):
         Returns:
             tuple: Locator representing the inventory list.
         """
-        return self.PRODUCTS
+        return self.__PRODUCTS
 
     def is_inventory_page_loaded(self):
         return "inventory" in self.get_current_url()
