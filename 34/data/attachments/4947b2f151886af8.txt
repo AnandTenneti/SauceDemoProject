@@ -1,0 +1,6 @@
+✓ Found element using: ('id', 'user-name')
+✓ Found element using: ('id', 'password')
+✓ Found element using: ('id', 'login-button')
+Product name is Sauce Labs Bolt T-Shirt
+Product description is Get your testing superhero on with the Sauce Labs bolt T-shirt
+Product price is $15.99
