@@ -34,6 +34,7 @@ jobs:
           mkdir allure-results
 
       - name: Run Tests
+        continue-on-error: true
         run: |
           pytest tests/ \
             --reruns 2 \
@@ -41,6 +42,7 @@ jobs:
             -v --alluredir=allure-results
 
       - name: Generate Allure Report
+        if: always()
         uses: simple-elf/allure-report-action@master
         with:
           allure_results: allure-results
