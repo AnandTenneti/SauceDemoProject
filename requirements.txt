@@ -14,4 +14,4 @@ pytest-html==4.2.0
 
 Faker==40.23.0
 
-pip install pytest-rerunfailures==15.1
+pytest-rerunfailures==15.1
