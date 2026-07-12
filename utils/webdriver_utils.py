@@ -6,7 +6,6 @@ from config.config import settings
 class WebDriverUtils:
     @staticmethod
     def wait_until_visible(driver, locator):
-
         return WebDriverWait(driver, settings["timeout"]).until(EC.visibility_of_element_located(locator))
 
     @staticmethod
