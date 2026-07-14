@@ -41,17 +41,17 @@ This framework automates end-to-end test scenarios for SauceDemo covering login,
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Language | Python 3.11+ |
-| Browser Automation | Selenium WebDriver 4.44.0 |
-| Test Framework | Pytest 9.0.3 |
-| Parallel Execution | pytest-xdist 3.8.0 |
-| Reporting | Allure 2.16.0, pytest-html 4.2.0 |
-| Test Data | Faker 40.23.0 |
-| Driver Management | webdriver-manager 4.1.2 |
-| CI/CD | GitHub Actions |
-| Browsers | Chrome, Firefox, Edge |
+| Layer              | Technology                       |
+| ------------------ | -------------------------------- |
+| Language           | Python 3.11+                     |
+| Browser Automation | Selenium WebDriver 4.44.0        |
+| Test Framework     | Pytest 9.0.3                     |
+| Parallel Execution | pytest-xdist 3.8.0               |
+| Reporting          | Allure 2.16.0, pytest-html 4.2.0 |
+| Test Data          | Faker 40.23.0                    |
+| Driver Management  | webdriver-manager 4.1.2          |
+| CI/CD              | GitHub Actions                   |
+| Browsers           | Chrome, Firefox, Edge            |
 
 ---
 
@@ -61,8 +61,7 @@ This framework automates end-to-end test scenarios for SauceDemo covering login,
 SauceDemoProject/
 │
 ├── .github/
-│   └── workflows/
-│       └── ci.yml                  # GitHub Actions pipeline
+│   └── workflows/                  # GitHub Actions CI/CD pipeline
 │
 ├── agents/
 │   ├── planner_agent.py            # Parses user intent into execution plan
@@ -70,33 +69,51 @@ SauceDemoProject/
 │   ├── report_agent.py             # Generates post-run summary
 │   └── execution_map.json          # Intent → pytest command mapping
 │
+├── config/
+│   ├── config.py                   # Environment/browser configuration
+│   └── settings.json
+│
 ├── pages/
 │   ├── BasePage.py                 # Base class with shared WebDriver utilities
 │   ├── LoginPage.py
 │   ├── HomePage.py
 │   ├── CartPage.py
 │   ├── CheckoutPage.py
-│   └── HeaderPage.py
+│   ├── HeaderPage.py
+│   └── ProductDetailsPage.py
 │
 ├── tests/
 │   ├── conftest.py                 # Fixtures: driver, logged_in_driver, cart_with_items
 │   ├── test_login.py
-│   ├── test_home.py
+│   ├── test_inventory.py
 │   ├── test_cart.py
-│   └── test_checkout.py
+│   ├── test_checkout.py
+│   └── test_product_details.py
 │
 ├── utils/
 │   ├── webdriver_utils.py          # Explicit wait helpers
 │   ├── common_utils.py             # File I/O, JSON helpers
-│   └── logger.py
+│   ├── healing_stats.py            # Locator healing statistics tracking
+│   └── test_registry.py            # Test/intent registry for the NLP runner
 │
 ├── testdata/
-│   └── users.json                  # Test user credentials
+│   ├── users.json                  # Test user credentials
+│   ├── products.json
+│   └── error_messages.json
 │
 ├── runners/                        # Custom pytest runner scripts
+│   ├── run_cross_browser.py
+│   └── run_smoketests.py
+│
+├── reports/                        # Generated HTML/Allure reports
+├── screenshots/                    # Failure screenshots (auto-generated)
+│
 ├── nlp_runner.py                   # NLP command runner entry point
 ├── pytest.ini                      # Markers, test paths, CLI defaults
-└── requirements.txt
+├── requirements.txt
+├── Dockerfile
+├── docker-compose.yml
+└── README.md
 ```
 
 ---
@@ -104,9 +121,11 @@ SauceDemoProject/
 ## Features
 
 ### Page Object Model
+
 Each page is encapsulated in its own class inheriting from `BasePage`, keeping locators and actions separate from test logic.
 
 ### Multi-Browser Support
+
 Run tests on Chrome, Firefox, or Edge via a single CLI flag. Supports both local and remote Selenium Grid execution.
 
 ```bash
@@ -115,6 +134,7 @@ pytest --browser=firefox --env=remote
 ```
 
 ### Parallel Execution
+
 Tests are `pytest-xdist` compatible. Run the full suite across multiple workers:
 
 ```bash
@@ -122,9 +142,11 @@ pytest -n auto
 ```
 
 ### Screenshot on Failure
+
 A `pytest_runtest_makereport` hook captures and attaches screenshots directly to the Allure report on any test failure — no manual step needed.
 
 ### Layered Fixtures
+
 Fixtures compose cleanly, from raw driver to fully authenticated sessions with pre-loaded cart state:
 
 ```
@@ -132,6 +154,7 @@ driver → logged_in_driver → cart_with_items
 ```
 
 ### NLP Agent Runner
+
 A three-agent pipeline (`planner_agent → execution_agent → report_agent`) accepts plain English commands and translates them to pytest execution. The architecture is deliberately designed to allow LLM integration as a drop-in upgrade to the planner layer — see [Roadmap](#roadmap).
 
 ---
@@ -139,12 +162,14 @@ A three-agent pipeline (`planner_agent → execution_agent → report_agent`) ac
 ## Installation
 
 **1. Clone the repository**
+
 ```bash
 git clone https://github.com/AnandTenneti/SauceDemoProject.git
 cd SauceDemoProject
 ```
 
 **2. Create and activate a virtual environment**
+
 ```bash
 # Mac/Linux
 python -m venv venv
@@ -156,6 +181,7 @@ venv\Scripts\activate
 ```
 
 **3. Install dependencies**
+
 ```bash
 pip install -r requirements.txt
 ```
@@ -209,11 +235,13 @@ allure open allure-report
 The NLP Runner (`nlp_runner.py`) accepts plain English test commands and routes them through a Planner → Executor → Reporter pipeline.
 
 **Start the runner:**
+
 ```bash
 python nlp_runner.py
 ```
 
 **Example commands:**
+
 ```
 Run smoke tests
 Run regression tests on chrome
@@ -254,6 +282,7 @@ allure open allure-report
 ```
 
 Reports include:
+
 - Test status by suite and marker
 - Execution metadata (browser, version)
 - Screenshots attached on failure
@@ -266,6 +295,7 @@ Reports include:
 The project includes a GitHub Actions workflow (`.github/workflows/ci.yml`) that runs on every push and pull request to `main`.
 
 Pipeline steps:
+
 1. Set up Python environment
 2. Install dependencies from `requirements.txt`
 3. Run smoke suite headlessly on Chrome
@@ -275,20 +305,20 @@ Pipeline steps:
 
 ## Roadmap
 
-| Status | Item |
-|---|---|
-| ✅ Done | Page Object Model architecture |
-| ✅ Done | Multi-browser support (Chrome/Firefox/Edge) |
-| ✅ Done | Selenium Grid remote execution |
-| ✅ Done | Parallel execution via pytest-xdist |
-| ✅ Done | Allure reporting with failure screenshots |
-| ✅ Done | NLP agent runner (Planner → Executor → Reporter) |
-| ✅ Done | GitHub Actions CI pipeline |
-| 🔜 Next | Tiered locator fallback (DOM heuristics → LLM) |
-| 🔜 Next | LLM-powered planner agent (Claude / OpenAI) |
+| Status  | Item                                                                    |
+| ------- | ----------------------------------------------------------------------- |
+| ✅ Done | Page Object Model architecture                                          |
+| ✅ Done | Multi-browser support (Chrome/Firefox/Edge)                             |
+| ✅ Done | Selenium Grid remote execution                                          |
+| ✅ Done | Parallel execution via pytest-xdist                                     |
+| ✅ Done | Allure reporting with failure screenshots                               |
+| ✅ Done | NLP agent runner (Planner → Executor → Reporter)                        |
+| ✅ Done | GitHub Actions CI pipeline                                              |
+| 🔜 Next | Tiered locator fallback (DOM heuristics → LLM)                          |
+| 🔜 Next | LLM-powered planner agent (Claude / OpenAI)                             |
 | 🔜 Next | Self-healing locators (auto-update execution_map.json from LLM results) |
-| 🔜 Next | Slack / email report notifications |
-| 🔜 Next | Docker Compose for local Selenium Grid |
+| 🔜 Next | Slack / email report notifications                                      |
+| 🔜 Next | Docker Compose for local Selenium Grid                                  |
 
 ---
 
