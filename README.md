@@ -4,10 +4,11 @@
 ![Selenium](https://img.shields.io/badge/Selenium-4.44.0-43B02A?logo=selenium&logoColor=white)
 ![Pytest](https://img.shields.io/badge/Pytest-9.0.3-0A9EDC?logo=pytest&logoColor=white)
 ![Allure](https://img.shields.io/badge/Allure-Report-orange)
-![CI](https://img.shields.io/badge/CI-GitHub%20Actions-2088FF?logo=github-actions&logoColor=white)
-![License](https://img.shields.io/badge/License-MIT-green)
+![CI](https://github.com/AnandTenneti/SauceDemoProject/actions/workflows/ci.yml/badge.svg)
 
 A production-grade Selenium + Pytest test automation framework for the [SauceDemo](https://www.saucedemo.com) web application, built with a **Page Object Model** architecture, multi-browser support, and an agent-based NLP command runner designed for gradual LLM integration.
+
+**What makes this different from a typical POM demo:** most portfolio automation frameworks stop at "tests pass." This one is built around a Planner → Executor → Reporter agent pipeline that turns plain-English commands into pytest runs, deliberately kept NLP-based (spaCy/rapidfuzz) rather than LLM-dependent so it stays fast, deterministic, and free to run — with the LLM upgrade path (see [Roadmap](#roadmap)) designed in from day one rather than bolted on.
 
 ---
 
@@ -105,14 +106,9 @@ SauceDemoProject/
 │   ├── run_cross_browser.py
 │   └── run_smoketests.py
 │
-├── reports/                        # Generated HTML/Allure reports
-├── screenshots/                    # Failure screenshots (auto-generated)
-│
 ├── nlp_runner.py                   # NLP command runner entry point
 ├── pytest.ini                      # Markers, test paths, CLI defaults
 ├── requirements.txt
-├── Dockerfile
-├── docker-compose.yml
 └── README.md
 ```
 
