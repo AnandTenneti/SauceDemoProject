@@ -94,18 +94,12 @@ SauceDemoProject/
 ├── utils/
 │   ├── webdriver_utils.py          # Explicit wait helpers
 │   ├── common_utils.py             # File I/O, JSON helpers
-│   ├── healing_stats.py            # Locator healing statistics tracking
 │   └── test_registry.py            # Test/intent registry for the NLP runner
 │
 ├── testdata/
 │   ├── users.json                  # Test user credentials
 │   ├── products.json
 │   └── error_messages.json
-│
-├── runners/                        # Custom pytest runner scripts
-│   ├── run_cross_browser.py
-│   └── run_smoketests.py
-│
 ├── nlp_runner.py                   # NLP command runner entry point
 ├── pytest.ini                      # Markers, test paths, CLI defaults
 ├── requirements.txt
@@ -288,14 +282,14 @@ Reports include:
 
 ## CI/CD
 
-The project includes a GitHub Actions workflow (`.github/workflows/ci.yml`) that runs on every push and pull request to `main`.
+The project includes a GitHub Actions workflow (`.github/workflows/ci.yml`) that currently runs manually via `workflow_dispatch` from the Actions tab — it's not yet wired to trigger automatically on push or pull request.
 
 Pipeline steps:
 
-1. Set up Python environment
+1. Set up Python environment and install Chrome
 2. Install dependencies from `requirements.txt`
-3. Run smoke suite headlessly on Chrome
-4. Upload Allure results as a build artifact
+3. Run the test suite headlessly on Chrome (with automatic reruns on flaky failures)
+4. Generate the Allure report and deploy it to GitHub Pages
 
 ---
 
