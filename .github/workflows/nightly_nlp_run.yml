@@ -39,7 +39,7 @@ jobs:
         env:
           CI: "true"
         run: >
-          python nlp_runner.py --no-open
+          python nlp_runner2.py --no-open
           --command "${{ github.event.inputs.command || 'run smoke and regression tests on chrome with allure report' }}"
 
       - name: Upload Allure results
