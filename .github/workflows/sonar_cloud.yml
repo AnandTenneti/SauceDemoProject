@@ -37,8 +37,15 @@ jobs:
 
       - name: Run tests with coverage
         run: |
-          pytest --cov=src --cov-report=xml:coverage.xml
-        continue-on-error: true # let Sonar report even if a test fails; remove if you want it to hard-fail here
+          pytest \
+          --cov=agents \
+          --cov=config \
+          --cov=pages \
+          --cov=runners \
+          --cov=utils \
+          --cov=nlp_runner \
+          --cov-report=xml:coverage.xml
+          continue-on-error: true # let Sonar report even if a test fails; remove if you want it to hard-fail here
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v3
