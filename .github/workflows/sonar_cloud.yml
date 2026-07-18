@@ -1,0 +1,47 @@
+# Add this job to your existing workflow in .github/workflows/
+# (alongside the job that already runs pytest + Allure).
+#
+# Requires one repo secret:
+#   SONAR_TOKEN  -> generated in SonarCloud under My Account > Security,
+#                   added at GitHub repo Settings > Secrets and variables > Actions
+#
+# SonarCloud auto-provides GITHUB_TOKEN-based auth for PR decoration,
+# no extra secret needed for that part.
+
+name: SonarCloud Analysis
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  sonarcloud:
+    name: SonarCloud Analysis
+    runs-on: ubuntu-latest
+    # no dependencies so workflow contains at least one job with no dependencies
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # SonarCloud needs full git history for blame/new-code metrics
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pytest-cov
+
+      - name: Run tests with coverage
+        run: |
+          pytest --cov=src --cov-report=xml:coverage.xml
+        continue-on-error: true # let Sonar report even if a test fails; remove if you want it to hard-fail here
+
+      - name: SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
