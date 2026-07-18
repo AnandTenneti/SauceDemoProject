@@ -45,7 +45,7 @@ jobs:
           --cov=utils \
           --cov=nlp_runner \
           --cov-report=xml:coverage.xml
-          continue-on-error: true # let Sonar report even if a test fails; remove if you want it to hard-fail here
+        continue-on-error: true # let Sonar report even if a test fails; remove if you want it to hard-fail here
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@v3
