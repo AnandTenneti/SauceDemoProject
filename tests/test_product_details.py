@@ -19,7 +19,7 @@ class TestProductDetails:
    - Data-driven validation using JSON test data.
    """
 
-    def test_product_details(self, logged_in_driver):
+    def test_product_details(self, seeded_driver):
         """
         Verify that the Product Details page displays the expected information
         for a selected product and allows the product to be added to the cart.
@@ -37,12 +37,12 @@ class TestProductDetails:
         - The product is successfully added to the cart.
         - The 'Remove' button replaces the 'Add to Cart' button.
         """
-        home_page = HomePage(logged_in_driver)
+        home_page = HomePage(seeded_driver)
         home_page.is_inventory_page_loaded()
-        WebDriverUtils.wait_until_elements_visible(logged_in_driver,
+        WebDriverUtils.wait_until_elements_visible(seeded_driver,
                                                    home_page.inventory_list_loaded())
         home_page.click_product_by_name("Sauce Labs Backpack")
-        product_details_page = ProductDetailsPage(logged_in_driver)
+        product_details_page = ProductDetailsPage(seeded_driver)
         print(f"Product name is {product_details_page.get_product_name()}")
         print(
             f"Product description is {product_details_page.get_product_description()}")
@@ -55,7 +55,7 @@ class TestProductDetails:
     product_data = CommonUtils.open_file("testdata/products.json")
 
     @pytest.mark.parametrize("products", product_data)
-    def test_product_details_from_json(self, logged_in_driver, products):
+    def test_product_details_from_json(self, seeded_driver, products):
         """
         Verify that multiple products display the correct details using
         JSON-based test data.
@@ -79,13 +79,13 @@ class TestProductDetails:
         - The selected product is successfully added to the cart.
         - The 'Remove' button is displayed after adding the product.
         """
-        home_page = HomePage(logged_in_driver)
+        home_page = HomePage(seeded_driver)
         home_page.is_inventory_page_loaded()
-        WebDriverUtils.wait_until_elements_visible(logged_in_driver,
+        WebDriverUtils.wait_until_elements_visible(seeded_driver,
                                                    home_page.inventory_list_loaded())
         product_name = products["name"]
         home_page.click_product_by_name(product_name)
-        product_details_page = ProductDetailsPage(logged_in_driver)
+        product_details_page = ProductDetailsPage(seeded_driver)
 
         product_description = products["description"]
         product_price = products["price"]

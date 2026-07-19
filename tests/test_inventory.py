@@ -1,5 +1,3 @@
-
-
 from faker import Faker
 import pytest
 
@@ -19,10 +17,12 @@ class TestHomePage:
 
     Preconditions:
     - User must be logged in successfully.
-    - The `logged_in_driver` fixture provides an authenticated session.
+    - The `seeded_driver` fixture provides an authenticated session via
+      cookie injection (see utils/session_seeder.py), rather than driving
+      the login form through the UI.
     """
 
-    def test_sort_product(self, logged_in_driver):
+    def test_sort_product(self, seeded_driver):
         """
         Verify that products can be sorted correctly.
 
@@ -34,14 +34,14 @@ class TestHomePage:
         Expected Result:
         Products should be sorted in descending alphabetical order.
         """
-        home_page = HomePage(logged_in_driver)
+        home_page = HomePage(seeded_driver)
         home_page.is_inventory_page_loaded()
-        WebDriverUtils.wait_until_elements_visible(logged_in_driver,
+        WebDriverUtils.wait_until_elements_visible(seeded_driver,
                                                    home_page.inventory_list_loaded())
         home_page.select_sort_order(HomePage.SortOptions.NAME_Z_A)
         assert home_page.is_sorted_correctly(HomePage.SortOptions.NAME_Z_A)
 
-    def test_product_search(self, logged_in_driver):
+    def test_product_search(self, seeded_driver):
         """
         Verify product navigation and add-to-cart functionality.
 
@@ -56,18 +56,18 @@ class TestHomePage:
         Product details should match the selected product and
         the product should be added successfully to the cart.
         """
-        home_page = HomePage(logged_in_driver)
-        WebDriverUtils.wait_until_elements_visible(logged_in_driver,
+        home_page = HomePage(seeded_driver)
+        WebDriverUtils.wait_until_elements_visible(seeded_driver,
                                                    home_page.inventory_list_loaded())
         product_name = "Sauce Labs Backpack"
         home_page.click_product_by_name(product_name)
-        product_page = ProductDetailsPage(logged_in_driver)
+        product_page = ProductDetailsPage(seeded_driver)
         displayed_product_name = product_page.get_product_name()
         assert displayed_product_name == product_name
         product_page.add_product_to_cart()
         assert product_page.is_remove_button_displayed()
 
-    def test_add_multiple_products_to_cart(self, logged_in_driver):
+    def test_add_multiple_products_to_cart(self, seeded_driver):
         """
         Verify multiple products can be added to the cart.
 
@@ -79,8 +79,8 @@ class TestHomePage:
         Expected Result:
         Cart badge count should match the number of added products.
         """
-        home_page = HomePage(logged_in_driver)
-        header_page = HeaderPage(logged_in_driver)
+        home_page = HomePage(seeded_driver)
+        header_page = HeaderPage(seeded_driver)
         assert header_page.get_cart_badge_count() == 0
 
         product_list = ["Sauce Labs Backpack",

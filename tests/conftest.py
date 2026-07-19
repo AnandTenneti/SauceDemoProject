@@ -18,6 +18,7 @@ from pages.HomePage import HomePage
 from pages.LoginPage import LoginPage
 from utils.common_utils import CommonUtils
 from utils.webdriver_utils import WebDriverUtils
+from utils.session_seeder import SessionSeeder
 
 
 def pytest_addoption(parser):
@@ -122,12 +123,33 @@ def logged_in_driver(driver):
 
 
 @pytest.fixture
-def cart_with_items(logged_in_driver):
-    home_page = HomePage(logged_in_driver)
+def seeded_driver(driver):
+    """
+    Authenticated driver via cookie-injection state seeding, bypassing the
+    login UI entirely.
+
+    Use this instead of `logged_in_driver` for tests that merely *require*
+    an authenticated session (cart, inventory, product details) but are not
+    themselves verifying login behavior — it skips two page loads and a
+    form submission per test. Tests that verify login/logout behavior
+    itself should keep using `logged_in_driver`, since that fixture
+    exercises the real UI flow.
+    """
+    users = CommonUtils.open_file("testdata/users.json")
+    user = next((u for u in users if u["username"] == "standard_user"), None)
+    assert user is not None, "standard_user not found in testdata/users.json"
+
+    SessionSeeder.seed_authenticated_session(driver, user["username"])
+    yield driver
+
+
+@pytest.fixture
+def cart_with_items(seeded_driver):
+    home_page = HomePage(seeded_driver)
     for product in ["Sauce Labs Backpack", "Sauce Labs Bike Light", "Sauce Labs Fleece Jacket"]:
         home_page.click_add_to_cart(product)
-    HeaderPage(logged_in_driver).click_cart_icon()
-    yield CartPage(logged_in_driver)
+    HeaderPage(seeded_driver).click_cart_icon()
+    yield CartPage(seeded_driver)
 
 
 @pytest.hookimpl(hookwrapper=True)
