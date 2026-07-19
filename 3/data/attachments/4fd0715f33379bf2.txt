@@ -1,0 +1,7 @@
+✓ Found element using: ('id', 'user-name')
+✓ Found element using: ('id', 'password')
+✓ Found element using: ('id', 'login-button')
+Product name is Sauce Labs Backpack
+Product description is Sly Pack that melds uncompromising style with unequaled laptop and tablet protection
+Product price is $29.99
+✓ Found element using: ('name', 'add-to-cart')

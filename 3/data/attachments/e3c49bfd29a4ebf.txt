@@ -1,0 +1,4 @@
+✓ Found element using: ('id', 'user-name')
+✓ Found element using: ('id', 'password')
+✓ Found element using: ('id', 'login-button')
+✓ Found element using: ('name', 'add-to-cart')
