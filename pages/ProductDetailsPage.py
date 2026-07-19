@@ -24,7 +24,9 @@ class ProductDetailsPage(BasePage):
     __PRODUCT_DESCRIPTION = (
         By.XPATH, "//div[@data-test='inventory-item-desc']")
     __PRODUCT_PRICE = (By.XPATH, "//div[@data-test='inventory-item-price']")
-    __ADD_TO_CART_BUTTON = (By.ID, "add-to-cart")
+    __ADD_TO_CART_BUTTON = ((By.ID, "add-to-cartt"),
+                            (By.NAME, "add-to-cart"),
+                            (By.CSS_SELECTOR, "[data-test='add-to-cart']"))
     __REMOVE_BUTTON = (By.ID, "remove")
 
     def __init__(self, driver):

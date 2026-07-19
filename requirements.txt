@@ -1,6 +1,7 @@
 # Core test framework
 pytest==9.0.3
 pytest-xdist==3.8.0
+pytest-cov==6.0.0
 
 # Browser automation
 selenium==4.44.0

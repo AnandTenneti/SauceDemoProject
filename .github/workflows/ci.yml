@@ -1,15 +1,66 @@
-name: Allure Report
+name: CI
 
 on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: "0 2 * * *"   # nightly full regression at 02:00 UTC
   workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
-  test:
+  smoke:
+    name: Smoke Suite (PR/Push)
+    if: github.event_name == 'push' || github.event_name == 'pull_request'
     runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Install Chrome
+        uses: browser-actions/setup-chrome@v1
+
+      - name: Run Smoke Tests
+        run: |
+          mkdir -p allure-results
+          pytest tests/ -m smoke \
+            --reruns 1 --reruns-delay 2 \
+            --cov=pages --cov=agents --cov=utils \
+            --cov-report=term-missing --cov-report=xml \
+            --alluredir=allure-results -v
+
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-smoke
+          path: coverage.xml
+
+      - name: Upload Smoke Allure Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: allure-results-smoke
+          path: allure-results
+
+  regression:
+    name: Full Regression (Nightly/Manual)
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -29,17 +80,24 @@ jobs:
 
       - name: Clean Allure Results
         run: |
-          rm -rf allure-results
-          rm -rf allure-report
+          rm -rf allure-results allure-report
           mkdir allure-results
 
-      - name: Run Tests
+      - name: Run Full Test Suite
         continue-on-error: true
         run: |
           pytest tests/ \
-            --reruns 2 \
-            --reruns-delay 2 \
+            --reruns 2 --reruns-delay 2 \
+            --cov=pages --cov=agents --cov=utils \
+            --cov-report=term-missing --cov-report=xml \
             -v --alluredir=allure-results
+
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-regression
+          path: coverage.xml
 
       - name: Generate Allure Report
         if: always()
@@ -48,11 +106,6 @@ jobs:
           allure_results: allure-results
           allure_report: allure-report
           allure_history: allure-history
-
-      - name: Verify Report Files
-        run: |
-          echo "Contents of allure-history:"
-          ls -R allure-history
 
       - name: Deploy Report to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
