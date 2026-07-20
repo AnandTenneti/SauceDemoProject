@@ -8,7 +8,7 @@
 
 A production-grade Selenium + Pytest test automation framework for the [SauceDemo](https://www.saucedemo.com) web application, built with a **Page Object Model** architecture, multi-browser support, and an agent-based NLP command runner designed for gradual LLM integration.
 
-**What makes this different from a typical POM demo:** most portfolio automation frameworks stop at "tests pass." This one is built around a Planner → Executor → Reporter agent pipeline that turns plain-English commands into pytest runs, deliberately kept NLP-based (spaCy/rapidfuzz) rather than LLM-dependent so it stays fast, deterministic, and free to run — with the LLM upgrade path (see [Roadmap](#roadmap)) designed in from day one rather than bolted on.
+**What makes this different from a typical POM demo:** most portfolio automation frameworks stop at "tests pass." This one is built around a Planner → Executor → Reporter agent pipeline that turns plain-English commands into pytest runs, deliberately kept deterministic and regex/rule-based rather than LLM-dependent so it stays fast, free to run, and predictable — with the LLM/NLP upgrade path (see [Roadmap](#roadmap)) designed in from day one rather than bolted on.
 
 ---
 
@@ -67,8 +67,7 @@ SauceDemoProject/
 ├── agents/
 │   ├── planner_agent.py            # Parses user intent into execution plan
 │   ├── execution_agent.py          # Builds and runs pytest command
-│   ├── report_agent.py             # Generates post-run summary
-│   └── execution_map.json          # Intent → pytest command mapping
+│   └── report_agent.py             # Generates post-run summary
 │
 ├── config/
 │   ├── config.py                   # Environment/browser configuration
@@ -84,7 +83,7 @@ SauceDemoProject/
 │   └── ProductDetailsPage.py
 │
 ├── tests/
-│   ├── conftest.py                 # Fixtures: driver, logged_in_driver, cart_with_items
+│   ├── conftest.py                 # Fixtures: driver, logged_in_driver, seeded_driver, cart_with_items
 │   ├── test_login.py
 │   ├── test_inventory.py
 │   ├── test_cart.py
@@ -94,7 +93,8 @@ SauceDemoProject/
 ├── utils/
 │   ├── webdriver_utils.py          # Explicit wait helpers
 │   ├── common_utils.py             # File I/O, JSON helpers
-│   └── test_registry.py            # Test/intent registry for the NLP runner
+│   ├── test_registry.py            # Reads markers from pytest.ini for the NLP runner
+│   └── session_seeder.py           # Cookie-injection session seeding (bypasses login UI)
 │
 ├── testdata/
 │   ├── users.json                  # Test user credentials
@@ -137,11 +137,16 @@ A `pytest_runtest_makereport` hook captures and attaches screenshots directly to
 
 ### Layered Fixtures
 
-Fixtures compose cleanly, from raw driver to fully authenticated sessions with pre-loaded cart state:
+Fixtures compose cleanly, from a raw driver up to a pre-loaded cart:
 
 ```
-driver → logged_in_driver → cart_with_items
+driver → logged_in_driver     (drives the real login form — for tests that verify login/logout itself)
+driver → seeded_driver → cart_with_items   (cookie-seeded session — for tests that just need to be logged in)
 ```
+
+### Session State Seeding
+
+`logged_in_driver` exercises the actual login form, which is correct for tests that verify login behavior but wasteful for every other test that merely needs an authenticated session. `SessionSeeder` (`utils/session_seeder.py`) seeds an authenticated session by injecting SauceDemo's `session-username` cookie directly, skipping the login UI entirely — used via the `seeded_driver` fixture. Cart state, by contrast, is held in the Angular app's in-memory component state rather than reliably persisted, so injecting it the same way was evaluated and rejected; cart setup still goes through the UI (`cart_with_items`).
 
 ### NLP Agent Runner
 
@@ -254,7 +259,7 @@ ExecutionAgent     → Builds and runs the pytest command
 ReportAgent        → Summarises results and opens Allure report
 ```
 
-The pipeline uses an intent-to-command mapping (`execution_map.json`) for reliable, deterministic resolution. The agent architecture is designed so the `PlannerAgent` can be upgraded to an LLM backend without changing the `ExecutionAgent` or `ReportAgent` layers.
+`PlannerAgent` resolves intent deterministically: it reads the live marker list out of `pytest.ini` (via `utils/test_registry.py`) and regex-matches it, plus browser names and flags like "parallel" or "allure", against the free-text request — including simple negation ("regression but not checkout"). No LLM or fuzzy-matching library is involved yet. The agent architecture is designed so `PlannerAgent` can be upgraded to an LLM backend later without changing `ExecutionAgent` or `ReportAgent` — see [Roadmap](#roadmap).
 
 ---
 
@@ -282,33 +287,34 @@ Reports include:
 
 ## CI/CD
 
-The project includes a GitHub Actions workflow (`.github/workflows/ci.yml`) that currently runs manually via `workflow_dispatch` from the Actions tab — it's not yet wired to trigger automatically on push or pull request.
+The project includes a GitHub Actions workflow (`.github/workflows/ci.yml`) split into two jobs:
 
-Pipeline steps:
+| Job          | Trigger                                                  | What it runs                                                                                  |
+| ------------ | -------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| `smoke`      | Automatically on every push/PR to `main`                 | `-m smoke` tests headlessly on Chrome, with coverage and Allure results uploaded as artifacts |
+| `regression` | Nightly (`02:00 UTC` cron) or manual `workflow_dispatch` | Full test suite with coverage, then deploys the Allure report to GitHub Pages                 |
 
-1. Set up Python environment and install Chrome
-2. Install dependencies from `requirements.txt`
-3. Run the test suite headlessly on Chrome (with automatic reruns on flaky failures)
-4. Generate the Allure report and deploy it to GitHub Pages
+Both jobs install Chrome, install dependencies from `requirements.txt`, run with automatic reruns on flaky failures, and upload a coverage report as a build artifact. Only the nightly/manual `regression` job generates and publishes the Allure history to GitHub Pages.
 
 ---
 
 ## Roadmap
 
-| Status  | Item                                                                    |
-| ------- | ----------------------------------------------------------------------- |
-| ✅ Done | Page Object Model architecture                                          |
-| ✅ Done | Multi-browser support (Chrome/Firefox/Edge)                             |
-| ✅ Done | Selenium Grid remote execution                                          |
-| ✅ Done | Parallel execution via pytest-xdist                                     |
-| ✅ Done | Allure reporting with failure screenshots                               |
-| ✅ Done | NLP agent runner (Planner → Executor → Reporter)                        |
-| ✅ Done | GitHub Actions CI pipeline                                              |
-| 🔜 Next | Tiered locator fallback (DOM heuristics → LLM)                          |
-| 🔜 Next | LLM-powered planner agent (Claude / OpenAI)                             |
-| 🔜 Next | Self-healing locators (auto-update execution_map.json from LLM results) |
-| 🔜 Next | Slack / email report notifications                                      |
-| 🔜 Next | Docker Compose for local Selenium Grid                                  |
+| Status  | Item                                                                            |
+| ------- | ------------------------------------------------------------------------------- |
+| ✅ Done | Page Object Model architecture                                                  |
+| ✅ Done | Multi-browser support (Chrome/Firefox/Edge)                                     |
+| ✅ Done | Selenium Grid remote execution                                                  |
+| ✅ Done | Parallel execution via pytest-xdist                                             |
+| ✅ Done | Allure reporting with failure screenshots                                       |
+| ✅ Done | NLP agent runner (Planner → Executor → Reporter)                                |
+| ✅ Done | GitHub Actions CI split into smoke (push/PR) and nightly/manual regression jobs |
+| ✅ Done | Cookie-injection session seeding to bypass login UI for non-login tests         |
+| 🔜 Next | Tiered locator fallback (DOM heuristics → LLM)                                  |
+| 🔜 Next | LLM-powered planner agent (Claude / OpenAI)                                     |
+| 🔜 Next | Data-driven test coverage expansion                                             |
+| 🔜 Next | Slack / email report notifications                                              |
+| 🔜 Next | Docker Compose for local Selenium Grid                                          |
 
 ---
 
