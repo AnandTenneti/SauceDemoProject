@@ -1,7 +1,0 @@
-✓ Found element using: ('id', 'user-name')
-✓ Found element using: ('id', 'password')
-✓ Found element using: ('id', 'login-button')
-Product name is Sauce Labs Bike Light
-Product description is Water-resistant with 3 lighting modes, 1 AAA battery included.
-Product price is $9.99
-✓ Found element using: ('name', 'add-to-cart')
