@@ -6,6 +6,7 @@ from pages.ProductDetailsPage import ProductDetailsPage
 
 from utils.common_utils import CommonUtils
 from utils.webdriver_utils import WebDriverUtils
+from utils.paths import TESTDATA
 
 
 class TestProductDetails:
@@ -52,7 +53,7 @@ class TestProductDetails:
         assert product_details_page.is_remove_button_displayed(
         ), "Remove button is not displayed"
 
-    product_data = CommonUtils.open_file("testdata/products.json")
+    product_data = CommonUtils.open_file(TESTDATA / "products.json")
 
     @pytest.mark.parametrize("products", product_data)
     def test_product_details_from_json(self, seeded_driver, products):
