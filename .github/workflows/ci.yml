@@ -101,7 +101,7 @@ jobs:
 
       - name: Generate Allure Report
         if: always()
-        uses: simple-elf/allure-report-action@master
+        uses: simple-elf/allure-report-action@v1.14
         with:
           allure_results: allure-results
           allure_report: allure-report
