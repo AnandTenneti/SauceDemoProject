@@ -52,6 +52,8 @@ class TestProductDetails:
         product_details_page.add_product_to_cart()
         assert product_details_page.is_remove_button_displayed(
         ), "Remove button is not displayed"
+        seeded_driver.refresh()
+        assert product_details_page.get_product_name() == "Sauce Labs Backpack"
 
     product_data = CommonUtils.open_file(TESTDATA / "products.json")
 
