@@ -1,0 +1,4 @@
+Product name is Sauce Labs Bolt T-Shirt
+Product description is Get your testing superhero on with the Sauce Labs bolt T-shirt
+Product price is $15.99
+✓ Found element using: ('name', 'add-to-cart')
