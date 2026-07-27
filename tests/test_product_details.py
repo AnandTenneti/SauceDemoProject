@@ -49,6 +49,7 @@ class TestProductDetails:
             f"Product description is {product_details_page.get_product_description()}")
         print(f"Product price is {product_details_page.get_product_price()}")
         assert product_details_page.get_product_name() == "Sauce Labs Backpack"
+        assert product_details_page.get_product_price() == "$29.99"
         product_details_page.add_product_to_cart()
         assert product_details_page.is_remove_button_displayed(
         ), "Remove button is not displayed"
