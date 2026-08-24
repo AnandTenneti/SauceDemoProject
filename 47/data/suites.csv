@@ -1,0 +1,247 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"
+        Verify multiple products can be added to the cart.
+
+        Steps:
+        1. Validate cart is initially empty.
+        2. Add multiple products.
+        3. Verify cart badge count is updated.
+
+        Expected Result:
+        Cart badge count should match the number of added products.
+        ","277","test_add_multiple_products_to_cart","tests","2026-08-24","passed","2026-08-24","TestHomePage","test_inventory","",""
+"Verify that a valid user can login successfully","641","Verify successful login","tests","2026-08-24","passed","2026-08-24","TestLogin","test_login","",""
+"
+        Verify login validation messages using
+        test data loaded from JSON.
+
+        Args:
+            user_data: Dictionary containing username,
+                       password, and expected error message.
+
+        Expected Result:
+            Actual error message should match
+            expected error message from test data.
+        ","515","test_login_validation_from_error_data_json[user_data0]","tests","2026-08-24","passed","2026-08-24","TestLogin","test_login","",""
+"Verify that users with valid credentials can log in successfully and are redirected to the inventory page.","1131","Verify login with valid user credentials","tests","2026-08-24","passed","2026-08-24","TestLogin","test_login","",""
+"
+        Verify login validation messages using
+        test data loaded from JSON.
+
+        Args:
+            user_data: Dictionary containing username,
+                       password, and expected error message.
+
+        Expected Result:
+            Actual error message should match
+            expected error message from test data.
+        ","512","test_login_validation_from_error_data_json[user_data1]","tests","2026-08-24","passed","2026-08-24","TestLogin","test_login","",""
+"Verify that a valid user can login successfully","1168","Verify successful login","tests","2026-08-24","passed","2026-08-24","TestLogin","test_login","",""
+"
+        Verify validation messages are displayed when mandatory
+        checkout fields are left blank.
+
+        Test Scenarios:
+            - Missing first name
+            - Missing last name
+            - Missing postal code
+
+        Expected Result:
+            Appropriate validation message is displayed for each
+            missing required field.
+        ","289","test_checkout_details_validation[a--1-Error: Last Name is required]","tests","2026-08-24","passed","2026-08-24","TestCheckoutPage","test_checkout","",""
+"
+        Verify that multiple products display the correct details using
+        JSON-based test data.
+
+        Test Steps:
+        1. Navigate to the inventory page.
+        2. Wait until the product list is loaded.
+        3. Read product information from the JSON file.
+        4. Open the corresponding product details page.
+        5. Verify the displayed product name.
+        6. Add the product to the shopping cart.
+        7. Verify that the 'Remove' button is displayed.
+
+        Test Data:
+        - Product name
+        - Product description
+        - Product price
+
+        Expected Result:
+        - Each product details page displays the correct product information.
+        - The selected product is successfully added to the cart.
+        - The 'Remove' button is displayed after adding the product.
+        ","299","test_product_details_from_json[products2]","tests","2026-08-24","passed","2026-08-24","TestProductDetails","test_product_details","",""
+"
+        Verify that products can be sorted correctly.
+
+        Steps:
+        1. Wait for inventory items to load.
+        2. Select sorting option (Name Z to A).
+        3. Validate products are displayed in the expected order.
+
+        Expected Result:
+        Products should be sorted in descending alphabetical order.
+        ","332","test_sort_product","tests","2026-08-24","passed","2026-08-24","TestHomePage","test_inventory","",""
+"Verify that users with valid credentials can log in successfully and are redirected to the inventory page.","1224","Verify login with valid user credentials","tests","2026-08-24","passed","2026-08-24","TestLogin","test_login","",""
+"Verify that a valid user can login successfully","1125","Verify successful login","tests","2026-08-24","passed","2026-08-24","TestLogin","test_login","",""
+"
+        Verify validation messages for invalid login scenarios.
+
+        Scenarios:
+            - Invalid username
+            - Empty password
+            - Empty username
+
+        Expected Result:
+            Correct validation message should be displayed.
+        ","1773","test_login_validation_for_invalid_credentials[standard_user1-secret_sauce-Epic sadface: Username and password do not match any user in this service]","tests","2026-08-24","passed","2026-08-24","TestLogin","test_login","",""
+"
+        Verify that a user can successfully complete the checkout process.
+
+        Test Steps:
+            1. Verify cart is initially empty.
+            2. Add multiple products to the cart.
+            3. Navigate to the cart page.
+            4. Proceed to checkout.
+            5. Enter valid customer information.
+            6. Verify calculated product total matches displayed total.
+            7. Complete the order.
+            8. Verify order confirmation message.
+
+        Expected Result:
+            - Cart count updates correctly.
+            - Product total calculation is accurate.
+            - Order is placed successfully.
+            - Confirmation message is displayed.
+        ","877","test_checkout_flow","tests","2026-08-24","passed","2026-08-24","TestCheckoutPage","test_checkout","",""
+"
+        Verify product navigation and add-to-cart functionality.
+
+        Steps:
+        1. Wait for inventory items to load.
+        2. Open a specific product.
+        3. Validate product details page.
+        4. Add the product to the cart.
+        5. Verify the Remove button is displayed.
+
+        Expected Result:
+        Product details should match the selected product and
+        the product should be added successfully to the cart.
+        ","300","test_product_search","tests","2026-08-24","passed","2026-08-24","TestHomePage","test_inventory","",""
+"
+        Verify validation messages for invalid login scenarios.
+
+        Scenarios:
+            - Invalid username
+            - Empty password
+            - Empty username
+
+        Expected Result:
+            Correct validation message should be displayed.
+        ","470","test_login_validation_for_invalid_credentials[-test-Epic sadface: Username is required]","tests","2026-08-24","passed","2026-08-24","TestLogin","test_login","",""
+"","4","test_execute_command","tests.agents","2026-08-24","passed","2026-08-24","","test_execution_agent","",""
+"
+        Verify validation messages for invalid login scenarios.
+
+        Scenarios:
+            - Invalid username
+            - Empty password
+            - Empty username
+
+        Expected Result:
+            Correct validation message should be displayed.
+        ","452","test_login_validation_for_invalid_credentials[standard_user--Epic sadface: Password is required]","tests","2026-08-24","passed","2026-08-24","TestLogin","test_login","",""
+"
+        Verify validation messages are displayed when mandatory
+        checkout fields are left blank.
+
+        Test Scenarios:
+            - Missing first name
+            - Missing last name
+            - Missing postal code
+
+        Expected Result:
+            Appropriate validation message is displayed for each
+            missing required field.
+        ","296","test_checkout_details_validation[-a-1-Error: First Name is required]","tests","2026-08-24","passed","2026-08-24","TestCheckoutPage","test_checkout","",""
+"
+        Verify validation messages are displayed when mandatory
+        checkout fields are left blank.
+
+        Test Scenarios:
+            - Missing first name
+            - Missing last name
+            - Missing postal code
+
+        Expected Result:
+            Appropriate validation message is displayed for each
+            missing required field.
+        ","297","test_checkout_details_validation[a-b--Error: Postal Code is required]","tests","2026-08-24","passed","2026-08-24","TestCheckoutPage","test_checkout","",""
+"Verify error message is displayed on entering invalid user details","518","Verify unsuccessful login","tests","2026-08-24","passed","2026-08-24","TestLogin","test_login","",""
+"
+        Verify that the Product Details page displays the expected information
+        for a selected product and allows the product to be added to the cart.
+
+        Test Steps:
+        1. Navigate to the inventory page.
+        2. Wait for the inventory list to load.
+        3. Open the 'Sauce Labs Backpack' product.
+        4. Verify the displayed product name.
+        5. Add the product to the shopping cart.
+        6. Verify that the 'Remove' button is displayed.
+
+        Expected Result:
+        - The Product Details page displays the correct product information.
+        - The product is successfully added to the cart.
+        - The 'Remove' button replaces the 'Add to Cart' button.
+        ","514","test_product_details","tests","2026-08-24","passed","2026-08-24","TestProductDetails","test_product_details","",""
+"","151","test_remove_all_items_from_cart","tests","2026-08-24","passed","2026-08-24","TestCartPage","test_cart","",""
+"","81","test_removing_item_from_cart","tests","2026-08-24","passed","2026-08-24","TestCartPage","test_cart","",""
+"
+        Verify that multiple products display the correct details using
+        JSON-based test data.
+
+        Test Steps:
+        1. Navigate to the inventory page.
+        2. Wait until the product list is loaded.
+        3. Read product information from the JSON file.
+        4. Open the corresponding product details page.
+        5. Verify the displayed product name.
+        6. Add the product to the shopping cart.
+        7. Verify that the 'Remove' button is displayed.
+
+        Test Data:
+        - Product name
+        - Product description
+        - Product price
+
+        Expected Result:
+        - Each product details page displays the correct product information.
+        - The selected product is successfully added to the cart.
+        - The 'Remove' button is displayed after adding the product.
+        ","304","test_product_details_from_json[products1]","tests","2026-08-24","passed","2026-08-24","TestProductDetails","test_product_details","",""
+"
+        Verify that multiple products display the correct details using
+        JSON-based test data.
+
+        Test Steps:
+        1. Navigate to the inventory page.
+        2. Wait until the product list is loaded.
+        3. Read product information from the JSON file.
+        4. Open the corresponding product details page.
+        5. Verify the displayed product name.
+        6. Add the product to the shopping cart.
+        7. Verify that the 'Remove' button is displayed.
+
+        Test Data:
+        - Product name
+        - Product description
+        - Product price
+
+        Expected Result:
+        - Each product details page displays the correct product information.
+        - The selected product is successfully added to the cart.
+        - The 'Remove' button is displayed after adding the product.
+        ","311","test_product_details_from_json[products0]","tests","2026-08-24","passed","2026-08-24","TestProductDetails","test_product_details","",""
