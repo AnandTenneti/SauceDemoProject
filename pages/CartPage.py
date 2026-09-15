@@ -21,7 +21,7 @@ class CartPage(BasePage):
 
     __CONTINUE_SHOPPING_BUTTON = (By.ID, "continue-shopping")
     __CHECKOUT_BUTTON = (By.ID, "checkout")
-    __CART_ITEMS = (By.XPATH, "//div[@class='cart_item']")
+    __CART_ITEMS = (By.CSS_SELECTOR, "div.cart_item")
 
     def click_on_continue_shopping(self):
         """
