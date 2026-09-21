@@ -1,18 +1,18 @@
 # Core test framework
 pytest==9.0.3
+
+# Test execution
 pytest-xdist==3.8.0
+pytest-rerunfailures==15.1
 pytest-cov==6.0.0
 
-# Browser automation
+# Browser automation (Selenium Manager handles drivers)
 selenium==4.44.0
-webdriver-manager==4.1.2
 
-#Reporting
+# Reporting
 allure-pytest==2.16.0
 pytest-html==4.2.0
 
-#Test data
-
+# Test data
 Faker==40.23.0
-
-pytest-rerunfailures==15.1
+openpyxl==3.1.5
