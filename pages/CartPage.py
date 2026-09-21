@@ -22,6 +22,7 @@ class CartPage(BasePage):
     __CONTINUE_SHOPPING_BUTTON = (By.ID, "continue-shopping")
     __CHECKOUT_BUTTON = (By.ID, "checkout")
     __CART_ITEMS = (By.CSS_SELECTOR, "div.cart_item")
+    __ITEM_PRICE = (By.CSS_SELECTOR, "div.inventory_item_price")
 
     def click_on_continue_shopping(self):
         """
@@ -100,10 +101,34 @@ class CartPage(BasePage):
 
     def get_cart_total(self):
         """
-        Calculate the total price of all products currently present
-        in the shopping cart.
+    Calculate the total price of all products currently present
+    in the shopping cart.
 
-        Returns:
+    Returns:
         float: Sum of all product prices.
         """
-        raise NotImplementedError("Needs to be implemented")
+        locator = (By.CSS_SELECTOR, "div.inventory_item_price")
+        price_elements = self.find_elements(locator)
+        if not price_elements:
+            locator = (By.CSS_SELECTOR, "div.inventory_item_price")
+            price_elements = self.find_elements(locator)
+        return price_elements
+
+    def get_item_price_in_cart(self, product_name):
+        locator = (By.XPATH, "//div[text()='"+product_name +
+                   "']/parent::a/following::div[@class='inventory_item_price']")
+        return self.find_element(locator).text
+
+    def get_cart_total_amount(self):
+        prices = self.get_cart_total()
+
+        return round(
+            sum(
+                float(price.text.replace("$", "").strip())
+                for price in prices
+            ),
+            2
+        )
+
+    def is_cart_page_loaded(self):
+        return "cart" in self.get_current_url()

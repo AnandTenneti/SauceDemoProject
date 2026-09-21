@@ -93,3 +93,6 @@ class BasePage():
 
     def refresh_page(self):
         self.driver.refresh()
+
+    def click_on_back(self):
+        self.driver.back()
