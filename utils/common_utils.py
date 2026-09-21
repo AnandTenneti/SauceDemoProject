@@ -2,13 +2,43 @@
 
 import json
 import re
+import csv
+import openpyxl
 
 
 class CommonUtils:
+
+    @staticmethod
+    def open_xlsx_file(path):
+        login_data = []
+        workbook = openpyxl.load_workbook(path)
+        sheet = workbook.active
+
+        for row in sheet.iter_rows(min_row=2, values_only=True):
+            email, password = row
+
+            login_data.append(
+                (
+                    str(email or ""),
+                    str(password or ""),
+
+                )
+            )
+
+        workbook.close()
+        return login_data
+
     @staticmethod
     def open_file(path):
         with open(path, encoding="utf-8") as f:
             return json.load(f)
+
+    @staticmethod
+    def open_csv_file(path):
+        with open(path, "r", newline="") as user_file:
+            csv_userfile_reader = csv.DictReader(user_file)
+            return [(user["username"], user["password"])
+                    for user in csv_userfile_reader]
 
     @staticmethod
     def get_extension(filename):
