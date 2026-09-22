@@ -118,7 +118,7 @@ class TestLogin:
             driver, EC.title_contains("Swag Labs"))
         assert "Swag Labs" in driver.title
 
-    valid_users = CommonUtils.open_file(USERS_JSON)
+    valid_users = CommonUtils.open_filetype(USERS_JSON)
 
     @allure.title("Verify successful login")
     @allure.description(
@@ -228,7 +228,7 @@ class TestLogin:
         assert login_page.get_error_message(
         ) == error_message
 
-    invalid_users = CommonUtils.open_file("testdata/error_messages.json")
+    invalid_users = CommonUtils.open_filetype("testdata/error_messages.json")
 
     @pytest.mark.parametrize("user_data", invalid_users)
     @pytest.mark.regression
@@ -257,7 +257,7 @@ class TestLogin:
         assert login_page.get_error_message(
         ) == error_message
 
-    valid_users = CommonUtils.open_csv_file(USERS_CSV)
+    valid_users = CommonUtils.open_filetype(USERS_CSV)
 
     @allure.title("Verify successful login")
     @allure.description(
@@ -282,8 +282,6 @@ class TestLogin:
         driver.get(settings["base_url"])
 
         login_page = LoginPage(driver)
-        # username = data["username"]
-        # password = data["password"]
         login_page.user_login(username, password)
         WebDriverUtils.wait_until(
             driver, EC.url_contains("inventory"))
@@ -301,7 +299,7 @@ class TestLogin:
         login_page = LoginPage(driver)
         assert "Swag Labs" in login_page.get_title()
 
-    valid_users = CommonUtils.open_xlsx_file(USERS_XLSX)
+    valid_users = CommonUtils.open_filetype(USERS_XLSX)
 
     @allure.title("Verify successful login")
     @allure.description(
