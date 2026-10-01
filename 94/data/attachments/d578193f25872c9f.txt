@@ -1,0 +1,3 @@
+✓ Found element using: ('id', 'user-name')
+✓ Found element using: ('id', 'password')
+✓ Found element using: ('id', 'login-button')
