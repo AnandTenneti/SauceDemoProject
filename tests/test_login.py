@@ -128,6 +128,7 @@ class TestLogin:
     @pytest.mark.regression
     @pytest.mark.login
     @pytest.mark.datadriven
+    @pytest.mark.json
     def test_login_with_valid_user_types_from_json(self, driver, data):
         """
         Verify login and logout using credentials loaded from a JSON file.
@@ -234,6 +235,7 @@ class TestLogin:
     @pytest.mark.parametrize("user_data", invalid_users)
     @pytest.mark.regression
     @pytest.mark.datadriven
+    @pytest.mark.json
     def test_login_validation_from_error_data_json(self, driver, user_data):
         """
         Verify login validation messages using data-driven JSON test data.
@@ -268,6 +270,8 @@ class TestLogin:
     @pytest.mark.parametrize("username,password", valid_users)
     @pytest.mark.regression
     @pytest.mark.login
+    @pytest.mark.datadriven
+    @pytest.mark.csv
     def test_login_with_valid_user_types_from_csv(self, driver, username, password):
         """
         Verify login and logout using credentials loaded from a CSV file.
@@ -311,6 +315,7 @@ class TestLogin:
     @pytest.mark.regression
     @pytest.mark.login
     @pytest.mark.datadriven
+    @pytest.mark.xlsx
     def test_login_with_valid_user_types_from_xlsx(self, driver, username, password):
         """
         Verify login and logout using credentials loaded from an Excel file.
