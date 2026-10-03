@@ -1,6 +1,7 @@
 import pytest
 
 from pages.CheckoutPage import CheckoutPage
+from pages.CartPage import CartPage
 from utils.common_utils import CommonUtils
 
 
@@ -59,6 +60,66 @@ class TestCheckoutPage:
 
         checkout_page.click_on_finish_button()
         assert checkout_page.get_order_confirmation() == "Thank you for your order!"
+
+    @pytest.mark.smoke
+    @pytest.mark.regression
+    def test_cancel_checkout_returns_to_cart_page(self, cart_with_items, fake):
+        """
+        Verify that cancelling checkout returns the user to the cart page.
+
+        Test Steps:
+            1. Navigate to the cart page with products.
+            2. Proceed to checkout.
+            3. Enter valid customer information.
+            4. Cancel the checkout process.
+            5. Verify that the cart page is displayed.
+
+        Expected Result:
+            - User is returned to the cart page after cancelling checkout.
+        """
+
+        cart_with_items.scroll_to_checkout_button()
+
+        cart_with_items.click_on_checkout()
+        driver = cart_with_items.driver
+        checkout_page = CheckoutPage(driver)
+
+        checkout_page.enter_checkout_details(
+            fake.first_name(), fake.last_name(), fake.zipcode())
+        checkout_page.click_on_cancel_button()
+        cart_page = CartPage(driver)
+        assert cart_page.is_cart_page_loaded(), \
+            "Cart page should be displayed after cancelling checkout"
+
+    @pytest.mark.smoke
+    @pytest.mark.regression
+    def test_browser_back_returns_to_cart_page(self, cart_with_items, fake):
+        """
+            Verify that cancelling checkout returns the user to the cart page.
+
+            Test Steps:
+                1. Navigate to the cart page with products.
+                2. Proceed to checkout.
+                3. Enter valid customer information.
+                4. Cancel the checkout process.
+                5. Verify that the cart page is displayed.
+
+            Expected Result:
+                - User is returned to the cart page after cancelling checkout.
+            """
+
+        cart_with_items.scroll_to_checkout_button()
+
+        cart_with_items.click_on_checkout()
+        driver = cart_with_items.driver
+        checkout_page = CheckoutPage(driver)
+
+        checkout_page.enter_checkout_details(
+            fake.first_name(), fake.last_name(), fake.zipcode())
+        #checkout_page.click_on_cancel_button()
+        cart_page = CartPage(driver)
+        assert cart_page.is_cart_page_loaded(), \
+            "Cart page should be displayed after cancelling checkout"
 
     @pytest.mark.regression
     @pytest.mark.parametrize("first_name, last_name, postal_code,error_message",
