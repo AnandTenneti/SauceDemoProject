@@ -33,6 +33,18 @@ def pytest_addoption(parser):
         default="local",
         help="Execution environment: local or remote"
     )
+    parser.addoption(
+        "--filetype",
+        action="store",
+        default=None,
+        choices=["json", "csv", "xlsx"],
+        help="Data file type to use for data-driven tests (json/csv/xlsx)"
+    )
+
+
+@pytest.fixture
+def filetype(request):
+    return request.config.getoption("--filetype")
 
 
 @pytest.fixture
@@ -42,7 +54,7 @@ def driver(request):
     match browserName:
         case "chrome":
             chrome_options = Options()
-            chrome_options.add_argument("--headless=new")
+            # chrome_options.add_argument("--headless=new")
             chrome_options.add_argument("--no-sandbox")
             chrome_options.add_argument("--disable-dev-shm-usage")
             chrome_options.add_argument("--disable-gpu")
@@ -147,6 +159,16 @@ def seeded_driver(driver):
 def cart_with_items(seeded_driver):
     home_page = HomePage(seeded_driver)
     for product in ["Sauce Labs Backpack", "Sauce Labs Bike Light", "Sauce Labs Fleece Jacket"]:
+        home_page.click_add_to_cart(product)
+    HeaderPage(seeded_driver).click_cart_icon()
+    yield CartPage(seeded_driver)
+
+
+@pytest.fixture
+def cart_with_all_items(seeded_driver):
+    home_page = HomePage(seeded_driver)
+    products = home_page.get_all_product_names()
+    for product in products:
         home_page.click_add_to_cart(product)
     HeaderPage(seeded_driver).click_cart_icon()
     yield CartPage(seeded_driver)
