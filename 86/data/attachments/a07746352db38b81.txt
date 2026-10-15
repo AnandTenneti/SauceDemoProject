@@ -1,2 +1,0 @@
-Browser: chrome
-Version: 153.0.8010.52
