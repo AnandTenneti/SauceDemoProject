@@ -68,7 +68,7 @@ def driver(request):
             chrome_options.add_experimental_option("prefs", prefs)
             if env == "remote":
                 driver = webdriver.Remote(
-                    command_executor="http://selenium-hub:4444/wd/hub",
+                    command_executor="http://localhost:4444",
                     options=chrome_options
                 )
             else:
@@ -79,7 +79,7 @@ def driver(request):
             firefox_options.add_argument("--headless")
             if env == "remote":
                 driver = webdriver.Remote(
-                    command_executor="http://selenium-hub:4444/wd/hub",
+                    command_executor="http://localhost:4444",
                     options=firefox_options
                 )
             else:
@@ -89,7 +89,7 @@ def driver(request):
             edge_options.add_argument("--headless")
             if env == "remote":
                 driver = webdriver.Remote(
-                    command_executor="http://selenium-hub:4444/wd/hub",
+                    command_executor="http://localhost:4444",
                     options=edge_options
                 )
             else:
